@@ -1,0 +1,97 @@
+<?php
+
+namespace Upstash\Vector;
+
+use Http\Discovery\Psr18ClientDiscovery;
+use Upstash\Vector\Contracts\IndexInterface;
+use Upstash\Vector\Contracts\IndexNamespaceInterface;
+use Upstash\Vector\Contracts\TransporterInterface;
+use Upstash\Vector\Exceptions\MissingEnvironmentVariableException;
+use Upstash\Vector\Operations\GetIndexInfoOperation;
+use Upstash\Vector\Transporter\BaseUri;
+use Upstash\Vector\Transporter\Headers;
+use Upstash\Vector\Transporter\HttpTransporter;
+
+final class Index implements IndexInterface
+{
+    public function __construct(
+        private readonly string $url,
+        #[\SensitiveParameter] private readonly string $token,
+        private ?TransporterInterface $transporter = null,
+    ) {}
+
+    public static function fromEnv(): self
+    {
+        $url = getenv('UPSTASH_VECTOR_REST_URL');
+        if (! $url) {
+            throw new MissingEnvironmentVariableException('UPSTASH_VECTOR_REST_URL');
+        }
+
+        $token = getenv('UPSTASH_VECTOR_REST_TOKEN');
+        if (! $token) {
+            throw new MissingEnvironmentVariableException('UPSTASH_VECTOR_REST_TOKEN');
+        }
+
+        return new self(url: $url, token: $token);
+    }
+
+    public function namespace(string $namespace): IndexNamespaceInterface
+    {
+        return new IndexNamespace($namespace, $this->getTransporter());
+    }
+
+    public function getInfo(): IndexInfo
+    {
+        return (new GetIndexInfoOperation($this->getTransporter()))->getInfo();
+    }
+
+    public function getNamespaceInfo(): NamespaceInfo
+    {
+        return $this->namespace('')->getNamespaceInfo();
+    }
+
+    public function reset(): void
+    {
+        $this->namespace('')->reset();
+    }
+
+    protected function getTransporter(): TransporterInterface
+    {
+        if ($this->transporter) {
+            return $this->transporter;
+        }
+
+        return $this->transporter = new HttpTransporter(
+            client: Psr18ClientDiscovery::find(),
+            baseUri: new BaseUri($this->url),
+            headers: new Headers([
+                'Authorization' => "Bearer {$this->token}",
+            ])
+        );
+    }
+
+    public function delete(): void
+    {
+        $this->namespace('')->delete();
+    }
+
+    public function upsert(VectorUpsert $vector): void
+    {
+        $this->namespace('')->upsert($vector);
+    }
+
+    public function upsertMany(array $vectors): void
+    {
+        $this->namespace('')->upsertMany($vectors);
+    }
+
+    public function upsertData(DataUpsert $data): void
+    {
+        $this->namespace('')->upsertData($data);
+    }
+
+    public function upsertDataMany(array $data): void
+    {
+        $this->namespace('')->upsertDataMany($data);
+    }
+}
