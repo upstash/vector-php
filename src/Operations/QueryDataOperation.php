@@ -60,7 +60,7 @@ final readonly class QueryDataOperation
                 data: $result['data'] ?? '',
                 metadata: $result['metadata'] ?? [],
             );
-        }, $data['results'] ?? []);
+        }, $data['result'] ?? []);
 
         return new DataQueryResult($results);
     }
