@@ -3,7 +3,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.3/phpunit.xsd"
     backupGlobals="false"
-    bootstrap="vendor/autoload.php"
     colors="true"
     processIsolation="false"
     stopOnFailure="false"
@@ -14,6 +13,7 @@
     beStrictAboutOutputDuringTests="true"
     cacheDirectory=".phpunit.cache"
     backupStaticProperties="false"
+    bootstrap="tests/bootstrap.php"
 >
     <testsuites>
         <testsuite name="Upstash Test Suite">
@@ -36,7 +36,7 @@
         </include>
     </source>
     <php>
-        <env name="UPSTASH_VECTOR_REST_URL" value="https://vector.upstash.com" force="true" />
-        <env name="UPSTASH_VECTOR_REST_TOKEN" value="test-token" force="true" />
+        <env name="UPSTASH_VECTOR_REST_URL" value="https://vector.upstash.com" />
+        <env name="UPSTASH_VECTOR_REST_TOKEN" value="test-token" />
     </php>
 </phpunit>

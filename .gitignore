@@ -33,3 +33,5 @@ testbench.yaml
 /coverage
 
 /examples/*.php
+
+.env

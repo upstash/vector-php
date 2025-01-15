@@ -94,4 +94,14 @@ final class Index implements IndexInterface
     {
         $this->namespace('')->upsertDataMany($data);
     }
+
+    public function query(VectorQuery $query): void
+    {
+        $this->namespace('')->query($query);
+    }
+
+    public function queryData(DataQuery $query): void
+    {
+        $this->namespace('')->queryData($query);
+    }
 }

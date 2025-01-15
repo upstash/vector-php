@@ -3,12 +3,12 @@
 namespace Upstash\Vector\Operations;
 
 use Upstash\Vector\Contracts\TransporterInterface;
+use Upstash\Vector\DataUpsert;
 use Upstash\Vector\Exceptions\OperationFailedException;
 use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
 use Upstash\Vector\Transporter\TransporterResponse;
-use Upstash\Vector\DataUpsert;
 
 /**
  * @internal

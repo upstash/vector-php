@@ -4,6 +4,7 @@ namespace Upstash\Vector\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Upstash\Vector\Index;
+use Upstash\Vector\IndexInfo;
 
 class IndexTest extends TestCase
 {
@@ -22,5 +23,14 @@ class IndexTest extends TestCase
         $index = Index::fromEnv();
 
         $this->assertInstanceOf(Index::class, $index);
+    }
+
+    public function test_can_get_index_info()
+    {
+        $index = Index::fromEnv();
+
+        $info = $index->getInfo();
+
+        $this->assertInstanceOf(IndexInfo::class, $info);
     }
 }
