@@ -7,6 +7,7 @@ use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
 use Upstash\Vector\Transporter\TransporterResponse;
+use Upstash\Vector\Vector;
 use Upstash\Vector\VectorQuery;
 use Upstash\Vector\VectorQueryResult;
 
@@ -49,6 +50,18 @@ final readonly class QueryVectorsOperation
 
     private function transformResponse(TransporterResponse $response): VectorQueryResult
     {
-        return new VectorQueryResult;
+        $data = json_decode($response->data, true);
+
+        $results = array_map(function (array $result) {
+            return new Vector(
+                id: $result['id'],
+                score: $result['score'],
+                vectors: $result['vectors'] ?? [],
+                data: $result['data'] ?? '',
+                metadata: $result['metadata'] ?? [],
+            );
+        }, $data['results'] ?? []);
+
+        return new VectorQueryResult($results);
     }
 }
