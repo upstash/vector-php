@@ -6,6 +6,8 @@ use Upstash\Vector\Contracts\IndexNamespaceInterface;
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\Operations\DeleteNamespaceOperation;
 use Upstash\Vector\Operations\GetNamespaceInfoOperation;
+use Upstash\Vector\Operations\QueryDataOperation;
+use Upstash\Vector\Operations\QueryVectorsOperation;
 use Upstash\Vector\Operations\ResetNamespaceOperation;
 use Upstash\Vector\Operations\UpsertDataOperation;
 use Upstash\Vector\Operations\UpsertVectorOperation;
@@ -53,5 +55,15 @@ final readonly class IndexNamespace implements IndexNamespaceInterface
     public function upsertDataMany(array $data): void
     {
         (new UpsertDataOperation($this->namespace, $this->transporter))->upsertMany($data);
+    }
+
+    public function query(VectorQuery $query): VectorQueryResult
+    {
+        return (new QueryVectorsOperation($this->namespace, $this->transporter))->query($query);
+    }
+
+    public function queryData(DataQuery $query): DataQueryResult
+    {
+        return (new QueryDataOperation($this->namespace, $this->transporter))->query($query);
     }
 }

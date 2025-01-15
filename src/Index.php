@@ -95,13 +95,13 @@ final class Index implements IndexInterface
         $this->namespace('')->upsertDataMany($data);
     }
 
-    public function query(VectorQuery $query): void
+    public function query(VectorQuery $query): VectorQueryResult
     {
-        $this->namespace('')->query($query);
+        return $this->namespace('')->query($query);
     }
 
-    public function queryData(DataQuery $query): void
+    public function queryData(DataQuery $query): DataQueryResult
     {
-        $this->namespace('')->queryData($query);
+        return $this->namespace('')->queryData($query);
     }
 }
