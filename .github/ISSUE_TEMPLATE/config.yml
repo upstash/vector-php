@@ -1,11 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Ask a question
-    url: https://github.com/upstash/vector/discussions/new?category=q-a
+    url: https://upstash.com/discord
     about: Ask the community for help
-  - name: Request a feature
-    url: https://github.com/upstash/vector/discussions/new?category=ideas
-    about: Share ideas for new features
   - name: Report a security issue
-    url: https://github.com/upstash/vector/security/policy
+    url: https://github.com/upstash/vector-php/security/policy
     about: Learn how to notify us for sensitive bugs
