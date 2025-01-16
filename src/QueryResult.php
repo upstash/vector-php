@@ -2,7 +2,7 @@
 
 namespace Upstash\Vector;
 
-final readonly class Vector
+final readonly class QueryResult
 {
     public function __construct(
         public string $id,

@@ -7,7 +7,7 @@ use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
 use Upstash\Vector\Transporter\TransporterResponse;
-use Upstash\Vector\Vector;
+use Upstash\Vector\QueryResult;
 use Upstash\Vector\VectorQuery;
 use Upstash\Vector\VectorQueryResult;
 
@@ -53,7 +53,7 @@ final readonly class QueryVectorsOperation
         $data = json_decode($response->data, true);
 
         $results = array_map(function (array $result) {
-            return new Vector(
+            return new QueryResult(
                 id: $result['id'],
                 score: $result['score'],
                 vector: $result['vector'] ?? [],

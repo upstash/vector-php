@@ -9,7 +9,7 @@ use Traversable;
 final readonly class VectorQueryResult implements Countable, IteratorAggregate
 {
     /**
-     * @param  array<Vector>  $results
+     * @param  array<QueryResult>  $results
      */
     public function __construct(
         private array $results,
@@ -26,7 +26,7 @@ final readonly class VectorQueryResult implements Countable, IteratorAggregate
     }
 
     /**
-     * @return Vector[]
+     * @return QueryResult[]
      */
     public function getResults(): array
     {
