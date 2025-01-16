@@ -1,6 +1,6 @@
 <?php
 
-namespace Upstash\Vector\Tests;
+namespace Upstash\Vector\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Upstash\Vector\Enums\FusionAlgorithm;

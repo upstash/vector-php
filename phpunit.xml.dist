@@ -16,8 +16,11 @@
     bootstrap="tests/bootstrap.php"
 >
     <testsuites>
-        <testsuite name="Upstash Test Suite">
-            <directory>tests</directory>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Dense">
+            <directory>tests/Dense</directory>
         </testsuite>
     </testsuites>
     <coverage>

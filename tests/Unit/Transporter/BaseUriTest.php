@@ -1,6 +1,6 @@
 <?php
 
-namespace Upstash\Vector\Tests\Transporter;
+namespace Upstash\Vector\Tests\Unit\Transporter;
 
 use PHPUnit\Framework\TestCase;
 use Upstash\Vector\Transporter\BaseUri;
