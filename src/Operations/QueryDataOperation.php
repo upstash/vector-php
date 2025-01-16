@@ -56,7 +56,7 @@ final readonly class QueryDataOperation
             return new Vector(
                 id: $result['id'],
                 score: $result['score'],
-                vectors: $result['vectors'] ?? [],
+                vector: $result['vector'] ?? [],
                 data: $result['data'] ?? '',
                 metadata: $result['metadata'] ?? [],
             );
