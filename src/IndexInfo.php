@@ -18,11 +18,6 @@ final readonly class IndexInfo
 
     public function namespace(string $namespace): NamespaceInfo
     {
-        $namespaceInfo = $this->namespaces[$namespace];
-        if (! $namespaceInfo) {
-            return new NamespaceInfo;
-        }
-
-        return $namespaceInfo;
+        return $this->namespaces[$namespace] ?? new NamespaceInfo;
     }
 }

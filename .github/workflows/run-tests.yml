@@ -9,6 +9,10 @@ on:
       - 'composer.json'
       - 'composer.lock'
 
+env:
+  DENSE_UPSTASH_VECTOR_REST_URL: ${{ secrets.DENSE_UPSTASH_VECTOR_REST_URL }}
+  DENSE_UPSTASH_VECTOR_REST_TOKEN: ${{ secrets.DENSE_UPSTASH_VECTOR_REST_TOKEN }}
+
 jobs:
   test:
     runs-on: ${{ matrix.os }}

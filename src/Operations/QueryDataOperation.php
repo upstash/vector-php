@@ -5,17 +5,20 @@ namespace Upstash\Vector\Operations;
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\DataQuery;
 use Upstash\Vector\DataQueryResult;
+use Upstash\Vector\Operations\Concerns\AssertsApiResponseErrors;
+use Upstash\Vector\QueryResult;
 use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
 use Upstash\Vector\Transporter\TransporterResponse;
-use Upstash\Vector\QueryResult;
 
 /**
  * @internal
  */
 final readonly class QueryDataOperation
 {
+    use AssertsApiResponseErrors;
+
     public function __construct(
         private string $namespace,
         private TransporterInterface $transporter,
@@ -41,11 +44,6 @@ final readonly class QueryDataOperation
         $this->assertResponse($response);
 
         return $this->transformResponse($response);
-    }
-
-    private function assertResponse(TransporterResponse $response): void
-    {
-        // TODO: Assert response
     }
 
     private function transformResponse(TransporterResponse $response): DataQueryResult

@@ -18,7 +18,7 @@ final readonly class VectorUpsert
         return [
             'id' => $this->id,
             'vector' => $this->vector,
-            'metadata' => $this->metadata,
+            'metadata' => (object) $this->metadata,
             'data' => $this->data,
         ];
     }

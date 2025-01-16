@@ -3,6 +3,7 @@
 namespace Upstash\Vector\Operations;
 
 use Upstash\Vector\Contracts\TransporterInterface;
+use Upstash\Vector\Operations\Concerns\AssertsApiResponseErrors;
 use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
@@ -12,6 +13,8 @@ use Upstash\Vector\Transporter\TransporterRequest;
  */
 final readonly class ResetNamespaceOperation
 {
+    use AssertsApiResponseErrors;
+
     public function __construct(private string $namespace, private TransporterInterface $transporter) {}
 
     public function reset(): void
@@ -29,6 +32,6 @@ final readonly class ResetNamespaceOperation
 
         $response = $this->transporter->sendRequest($request);
 
-        // TODO: Assert errors and throw exceptions
+        $this->assertResponse($response);
     }
 }

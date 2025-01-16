@@ -2,11 +2,12 @@
 
 namespace Upstash\Vector;
 
+use ArrayAccess;
 use Countable;
 use IteratorAggregate;
 use Traversable;
 
-final readonly class VectorQueryResult implements Countable, IteratorAggregate
+final readonly class VectorQueryResult implements ArrayAccess, Countable, IteratorAggregate
 {
     /**
      * @param  array<QueryResult>  $results
@@ -32,4 +33,18 @@ final readonly class VectorQueryResult implements Countable, IteratorAggregate
     {
         return $this->results;
     }
+
+    public function offsetExists(mixed $offset): bool
+    {
+        return isset($this->results[$offset]);
+    }
+
+    public function offsetGet(mixed $offset): mixed
+    {
+        return $this->results[$offset];
+    }
+
+    public function offsetSet(mixed $offset, mixed $value): void {}
+
+    public function offsetUnset(mixed $offset): void {}
 }

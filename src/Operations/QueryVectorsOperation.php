@@ -3,11 +3,12 @@
 namespace Upstash\Vector\Operations;
 
 use Upstash\Vector\Contracts\TransporterInterface;
+use Upstash\Vector\Operations\Concerns\AssertsApiResponseErrors;
+use Upstash\Vector\QueryResult;
 use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
 use Upstash\Vector\Transporter\TransporterResponse;
-use Upstash\Vector\QueryResult;
 use Upstash\Vector\VectorQuery;
 use Upstash\Vector\VectorQueryResult;
 
@@ -16,6 +17,8 @@ use Upstash\Vector\VectorQueryResult;
  */
 final readonly class QueryVectorsOperation
 {
+    use AssertsApiResponseErrors;
+
     public function __construct(
         private string $namespace,
         private TransporterInterface $transporter,
@@ -41,11 +44,6 @@ final readonly class QueryVectorsOperation
         $this->assertResponse($response);
 
         return $this->transformResponse($response);
-    }
-
-    private function assertResponse(TransporterResponse $response)
-    {
-        // TODO: Assert errors and throw exceptions
     }
 
     private function transformResponse(TransporterResponse $response): VectorQueryResult

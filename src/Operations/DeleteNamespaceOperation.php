@@ -2,8 +2,8 @@
 
 namespace Upstash\Vector\Operations;
 
-use InvalidArgumentException;
 use Upstash\Vector\Contracts\TransporterInterface;
+use Upstash\Vector\Exceptions\OperationFailedException;
 use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
@@ -20,7 +20,7 @@ final readonly class DeleteNamespaceOperation
         $namespace = trim($this->namespace);
         if ($namespace === '') {
             // TODO: Improve exception
-            throw new InvalidArgumentException('The default namespace, which is the empty string "", cannot be deleted.');
+            throw new OperationFailedException('The default namespace, which is the empty string "", cannot be deleted.');
         }
 
         $request = new TransporterRequest(

@@ -3,10 +3,10 @@
 namespace Upstash\Vector\Operations;
 
 use Upstash\Vector\Contracts\TransporterInterface;
+use Upstash\Vector\Operations\Concerns\AssertsApiResponseErrors;
 use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
-use Upstash\Vector\Transporter\TransporterResponse;
 use Upstash\Vector\VectorUpsert;
 
 /**
@@ -14,6 +14,8 @@ use Upstash\Vector\VectorUpsert;
  */
 final readonly class UpsertVectorOperation
 {
+    use AssertsApiResponseErrors;
+
     public function __construct(private string $namespace, private TransporterInterface $transporter) {}
 
     public function upsert(VectorUpsert $upsert): void
@@ -52,10 +54,5 @@ final readonly class UpsertVectorOperation
             path: $path,
             data: $data,
         );
-    }
-
-    private function assertResponse(TransporterResponse $response): void
-    {
-        // TODO: Assert errors and throw exceptions
     }
 }

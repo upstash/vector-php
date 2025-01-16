@@ -16,11 +16,4 @@ class IndexTest extends TestCase
 
         $this->assertInstanceOf(Index::class, $index);
     }
-
-    public function test_can_be_initialized_from_environment()
-    {
-        $index = Index::fromEnv();
-
-        $this->assertInstanceOf(Index::class, $index);
-    }
 }

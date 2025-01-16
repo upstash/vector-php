@@ -15,6 +15,10 @@
     backupStaticProperties="false"
     bootstrap="tests/bootstrap.php"
 >
+    <extensions>
+        <bootstrap class="RobinIngelbrecht\PHPUnitPrettyPrint\PhpUnitExtension">
+        </bootstrap>
+    </extensions>
     <testsuites>
         <testsuite name="Unit">
             <directory>tests/Unit</directory>
@@ -39,7 +43,7 @@
         </include>
     </source>
     <php>
-        <env name="UPSTASH_VECTOR_REST_URL" value="https://vector.upstash.com" />
-        <env name="UPSTASH_VECTOR_REST_TOKEN" value="test-token" />
+        <env name="DENSE_UPSTASH_VECTOR_REST_URL" value="https://vector.upstash.com" />
+        <env name="DENSE_UPSTASH_VECTOR_REST_TOKEN" value="test-token" />
     </php>
 </phpunit>
