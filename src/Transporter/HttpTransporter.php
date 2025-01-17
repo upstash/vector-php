@@ -83,8 +83,7 @@ final readonly class HttpTransporter implements TransporterInterface
 
         return new TransporterResponse(
             statusCode: $response->getStatusCode(),
-            // TODO: Improve ContentType detection
-            contentType: ContentType::tryFrom($response->getHeaderLine('Content-Type')),
+            contentType: $response->getHeaderLine('Content-Type'),
             headers: $headers,
             data: $response->getBody()->getContents(),
         );
