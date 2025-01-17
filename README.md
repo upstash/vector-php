@@ -82,7 +82,7 @@ $result = $index->queryData(new DataQuery(
 ```
 
 ## Namespaces
-Upstash Vector allows you to partition a single index into multiple isolated namespaces. Each namespace functions as a self-contained subset of the index, in which read and write requests are only limited to one namespace. To learn more about it, see Namespaces
+Upstash Vector allows you to partition a single index into multiple isolated namespaces. Each namespace functions as a self-contained subset of the index, in which read and write requests are only limited to one namespace. To learn more about it, [see Namespaces](https://upstash.com/docs/vector/features/namespaces).
 
 ### Example
 ```php
