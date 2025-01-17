@@ -8,7 +8,7 @@ use Upstash\Vector\Tests\Concerns\WaitsForIndex;
 use Upstash\Vector\VectorQuery;
 use Upstash\Vector\VectorUpsert;
 
-class QueryVectorTest extends TestCase
+class QueryVectorsTest extends TestCase
 {
     use UsesDenseIndex;
     use WaitsForIndex;

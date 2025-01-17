@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Upstash\Vector\IndexInfo;
 use Upstash\Vector\Tests\Concerns\UsesDenseIndex;
 
-class GetInfoTest extends TestCase
+class GetIndexInfoTest extends TestCase
 {
     use UsesDenseIndex;
 
