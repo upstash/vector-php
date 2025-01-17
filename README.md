@@ -4,8 +4,6 @@
 [![Tests](https://img.shields.io/github/actions/workflow/status/upstash/vector-php/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/upstash/vector-php/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/upstash/vector.svg?style=flat-square)](https://packagist.org/packages/upstash/vector)
 
-> **This project is still in development.**
-
 Upstash Vector is an HTTP serverless Vector Database.
 
 You can store, query, and retrieve vectors from your application, use it to power your search, and more.
