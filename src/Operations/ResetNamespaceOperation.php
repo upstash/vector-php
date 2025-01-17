@@ -21,7 +21,7 @@ final readonly class ResetNamespaceOperation
     {
         $path = '/reset';
         if (trim($this->namespace) !== '') {
-            $path = "/reset/$path";
+            $path = "/reset/$this->namespace";
         }
 
         $request = new TransporterRequest(

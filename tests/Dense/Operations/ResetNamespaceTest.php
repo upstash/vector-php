@@ -14,8 +14,6 @@ class ResetNamespaceTest extends TestCase
 
     public function test_can_reset_namespace(): void
     {
-        $this->markTestIncomplete('This test has not been implemented yet.');
-
         // Arrange
         $this->namespace->upsert(new VectorUpsert('1', [0.1, 0.1]));
         $this->waitForIndex($this->index);
