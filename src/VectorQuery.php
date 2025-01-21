@@ -11,7 +11,8 @@ final readonly class VectorQuery
      * @param  array<float>  $vector
      */
     public function __construct(
-        public array $vector,
+        public array $vector = [],
+        public ?SparseVector $sparseVector = null,
         public int $topK = 10,
         public bool $includeMetadata = false,
         public bool $includeVectors = false,
@@ -23,8 +24,18 @@ final readonly class VectorQuery
 
     public function toArray(): array
     {
+        $data = [];
+
+        if (! empty($this->vector)) {
+            $data['vector'] = $this->vector;
+        }
+
+        if ($this->sparseVector !== null) {
+            $data['sparseVector'] = $this->sparseVector->toArray();
+        }
+
         $data = [
-            'vector' => $this->vector,
+            ...$data,
             'topK' => $this->topK,
             'includeMetadata' => $this->includeMetadata,
             'includeVectors' => $this->includeVectors,
