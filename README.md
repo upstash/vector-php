@@ -1,7 +1,7 @@
 # Vector Client SDK for PHP
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/upstash/vector.svg?style=flat-square)](https://packagist.org/packages/upstash/vector)
-[![Tests](https://img.shields.io/github/actions/workflow/status/upstash/vector-php/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/upstash/vector-php/actions/workflows/run-tests.yml)
+[![Tests](https://img.shields.io/github/actions/workflow/status/upstash/vector-php/run-tests.yml?branch=master&label=tests&style=flat-square)](https://github.com/upstash/vector-php/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/upstash/vector.svg?style=flat-square)](https://packagist.org/packages/upstash/vector)
 
 Upstash Vector is an HTTP serverless Vector Database.
