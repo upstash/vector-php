@@ -26,6 +26,12 @@
         <testsuite name="Dense">
             <directory>tests/Dense</directory>
         </testsuite>
+        <testsuite name="Sparse">
+            <directory>tests/Sparse</directory>
+        </testsuite>
+        <testsuite name="Hybrid">
+            <directory>tests/Hybrid</directory>
+        </testsuite>
     </testsuites>
     <coverage>
         <report>
