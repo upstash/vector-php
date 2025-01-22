@@ -7,6 +7,10 @@ use Countable;
 use IteratorAggregate;
 use Traversable;
 
+/**
+ * @implements IteratorAggregate<int,QueryResult>
+ * @implements ArrayAccess<int,QueryResult>
+ */
 final readonly class VectorQueryResult implements ArrayAccess, Countable, IteratorAggregate
 {
     /**
@@ -21,6 +25,9 @@ final readonly class VectorQueryResult implements ArrayAccess, Countable, Iterat
         return count($this->results);
     }
 
+    /**
+     * @return Traversable<int,QueryResult>
+     */
     public function getIterator(): Traversable
     {
         return new \ArrayIterator($this->getResults());
@@ -39,7 +46,7 @@ final readonly class VectorQueryResult implements ArrayAccess, Countable, Iterat
         return isset($this->results[$offset]);
     }
 
-    public function offsetGet(mixed $offset): mixed
+    public function offsetGet(mixed $offset): QueryResult
     {
         return $this->results[$offset];
     }

@@ -12,10 +12,10 @@ final readonly class DataUpsert
 
     public function toArray(): array
     {
-        // TODO: Improve transformation
         return [
             'id' => $this->id,
             'data' => $this->data,
+            'metadata' => (object) $this->metadata,
         ];
     }
 }

@@ -17,7 +17,6 @@ final readonly class VectorUpsert
         $result = [
             'id' => $this->id,
             'metadata' => (object) $this->metadata,
-            'data' => $this->data,
         ];
 
         if ($this->sparseVector !== null) {
@@ -26,6 +25,10 @@ final readonly class VectorUpsert
 
         if (! empty($this->vector)) {
             $result['vector'] = $this->vector;
+        }
+
+        if ($this->data !== null) {
+            $result['data'] = $this->data;
         }
 
         return $result;

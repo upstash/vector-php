@@ -8,6 +8,10 @@ use Countable;
 use IteratorAggregate;
 use Traversable;
 
+/**
+ * @implements IteratorAggregate<int,QueryResult>
+ * @implements ArrayAccess<int,QueryResult>
+ */
 final readonly class DataQueryResult implements ArrayAccess, Countable, IteratorAggregate
 {
     /**
@@ -40,7 +44,7 @@ final readonly class DataQueryResult implements ArrayAccess, Countable, Iterator
         return isset($this->results[$offset]);
     }
 
-    public function offsetGet(mixed $offset): mixed
+    public function offsetGet(mixed $offset): QueryResult
     {
         return $this->results[$offset];
     }

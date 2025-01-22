@@ -4,6 +4,7 @@ namespace Upstash\Vector\Operations;
 
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\Exceptions\OperationFailedException;
+use Upstash\Vector\Operations\Concerns\AssertsApiResponseErrors;
 use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
@@ -13,13 +14,14 @@ use Upstash\Vector\Transporter\TransporterRequest;
  */
 final readonly class DeleteNamespaceOperation
 {
+    use AssertsApiResponseErrors;
+
     public function __construct(private string $namespace, private TransporterInterface $transporter) {}
 
     public function delete(): void
     {
         $namespace = trim($this->namespace);
         if ($namespace === '') {
-            // TODO: Improve exception
             throw new OperationFailedException('The default namespace, which is the empty string "", cannot be deleted.');
         }
 
@@ -31,6 +33,6 @@ final readonly class DeleteNamespaceOperation
 
         $response = $this->transporter->sendRequest($request);
 
-        // TODO: Assert errors and throw exceptions
+        $this->assertResponse($response);
     }
 }
