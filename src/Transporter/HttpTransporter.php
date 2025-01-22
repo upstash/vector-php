@@ -8,6 +8,7 @@ use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Upstash\Vector\Contracts\TransporterInterface;
+use Upstash\Vector\Telemetry\SdkTelemetryReporter;
 
 /**
  * @internal
@@ -91,8 +92,7 @@ final readonly class HttpTransporter implements TransporterInterface
 
     private function addTelemetryHeaders(RequestInterface|MessageInterface $psr17Request): RequestInterface|MessageInterface
     {
-        // TODO: Add PHP and Package Version
-        return $psr17Request
-            ->withHeader('Upstash-Telemetry-Runtime', 'php');
+        return (new SdkTelemetryReporter)
+            ->appendHeaders($psr17Request);
     }
 }
