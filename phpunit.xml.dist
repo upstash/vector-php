@@ -52,5 +52,8 @@
         <!-- For testing sparse index -->
         <env name="SPARSE_UPSTASH_VECTOR_REST_URL" value="https://vector.upstash.com" />
         <env name="SPARSE_UPSTASH_VECTOR_REST_TOKEN" value="test-token" />
+        <!-- For testing hybrid index -->
+        <env name="HYBRID_UPSTASH_VECTOR_REST_URL" value="https://vector.upstash.com" />
+        <env name="HYBRID_UPSTASH_VECTOR_REST_TOKEN" value="test-token" />
     </php>
 </phpunit>

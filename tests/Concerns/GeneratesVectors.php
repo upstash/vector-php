@@ -2,4 +2,16 @@
 
 namespace Upstash\Vector\Tests\Concerns;
 
-trait GeneratesVectors {}
+trait GeneratesVectors
+{
+    protected function generateVector(int $dimensions): array
+    {
+        $vector = [];
+
+        for ($i = 0; $i < $dimensions; $i++) {
+            $vector[] = random_int(0, 100) / 100;
+        }
+
+        return $vector;
+    }
+}
