@@ -104,4 +104,9 @@ final class Index implements IndexInterface
     {
         return $this->namespace('')->queryData($query);
     }
+
+    public function deleteVectors(array $ids): VectorDeleteResult
+    {
+        return $this->namespace('')->deleteVectors($ids);
+    }
 }

@@ -6,6 +6,7 @@ use Upstash\Vector\DataQuery;
 use Upstash\Vector\DataQueryResult;
 use Upstash\Vector\DataUpsert;
 use Upstash\Vector\NamespaceInfo;
+use Upstash\Vector\VectorDeleteResult;
 use Upstash\Vector\VectorQuery;
 use Upstash\Vector\VectorQueryResult;
 use Upstash\Vector\VectorUpsert;
@@ -35,4 +36,6 @@ interface IndexNamespaceInterface
     public function query(VectorQuery $query): VectorQueryResult;
 
     public function queryData(DataQuery $query): DataQueryResult;
+
+    public function deleteVectors(array $ids): VectorDeleteResult;
 }
