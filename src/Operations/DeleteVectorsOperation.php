@@ -11,7 +11,10 @@ use Upstash\Vector\Transporter\TransporterRequest;
 use Upstash\Vector\Transporter\TransporterResponse;
 use Upstash\Vector\VectorDeleteResult;
 
-final class DeleteVectorsOperation
+/**
+ * @internal
+ */
+final readonly class DeleteVectorsOperation
 {
     use AssertsApiResponseErrors;
 
