@@ -2,7 +2,9 @@
 
 namespace Upstash\Vector;
 
-final readonly class QueryResult
+use Upstash\Vector\Contracts\VectorIdentifierInterface;
+
+final readonly class QueryResult implements VectorIdentifierInterface
 {
     public function __construct(
         public string $id,
@@ -11,4 +13,9 @@ final readonly class QueryResult
         public string $data = '',
         public array $metadata = [],
     ) {}
+
+    public function getIdentifier(): string
+    {
+        return $this->id;
+    }
 }

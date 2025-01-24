@@ -37,9 +37,6 @@ final readonly class IndexNamespace implements IndexNamespaceInterface
         (new UpsertVectorOperation($this->namespace, $this->transporter))->upsert($vector);
     }
 
-    /**
-     * @param  array<VectorUpsert>  $vectors
-     */
     public function upsertMany(array $vectors): void
     {
         (new UpsertVectorOperation($this->namespace, $this->transporter))->upsertMany($vectors);
@@ -50,9 +47,6 @@ final readonly class IndexNamespace implements IndexNamespaceInterface
         (new UpsertDataOperation($this->namespace, $this->transporter))->upsert($data);
     }
 
-    /**
-     * @param  array<DataUpsert>  $data
-     */
     public function upsertDataMany(array $data): void
     {
         (new UpsertDataOperation($this->namespace, $this->transporter))->upsertMany($data);

@@ -37,5 +37,8 @@ interface IndexNamespaceInterface
 
     public function queryData(DataQuery $query): DataQueryResult;
 
+    /**
+     * @param  array<string|VectorIdentifierInterface>  $ids
+     */
     public function deleteVectors(array $ids): VectorDeleteResult;
 }

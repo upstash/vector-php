@@ -2,7 +2,9 @@
 
 namespace Upstash\Vector\Operations;
 
+use InvalidArgumentException;
 use Upstash\Vector\Contracts\TransporterInterface;
+use Upstash\Vector\Contracts\VectorIdentifierInterface;
 use Upstash\Vector\Exceptions\OperationFailedException;
 use Upstash\Vector\Operations\Concerns\AssertsApiResponseErrors;
 use Upstash\Vector\Transporter\ContentType;
@@ -21,18 +23,19 @@ final readonly class DeleteVectorsOperation
     public function __construct(private string $namespace, private TransporterInterface $transporter) {}
 
     /**
-     * @param  array<string>  $ids
+     * @param  array<string|VectorIdentifierInterface>  $ids
      */
     public function delete(array $ids): VectorDeleteResult
     {
         $path = $this->getPath();
+        $vectorIds = $this->mapIds($ids);
 
         try {
             $request = new TransporterRequest(
                 contentType: ContentType::JSON,
                 method: Method::DELETE,
                 path: $path,
-                data: $ids,
+                data: $vectorIds,
             );
         } catch (\JsonException $e) {
             throw new OperationFailedException('Invalid JSON');
@@ -62,5 +65,31 @@ final readonly class DeleteVectorsOperation
         return new VectorDeleteResult(
             deleted: $data['deleted'] ?? 0,
         );
+    }
+
+    /**
+     * @param  array<string|VectorIdentifierInterface>  $ids
+     * @return array<string>
+     */
+    private function mapIds(array $ids): array
+    {
+        $result = [];
+        foreach ($ids as $id) {
+            if ($id instanceof VectorIdentifierInterface) {
+                $result[] = $id->getIdentifier();
+
+                continue;
+            }
+
+            if (is_string($id)) {
+                $result[] = $id;
+
+                continue;
+            }
+
+            throw new InvalidArgumentException('Invalid ID, should be a string');
+        }
+
+        return $result;
     }
 }
