@@ -20,6 +20,10 @@ class ResetAllNamespacesTest extends TestCase
             $this->markTestSkipped('This test is not supported in Paratest');
         }
 
+        $this->markTestSkipped(
+            'Skip until we find a way to run GitHub tests without intefering with each others vector indexes'
+        );
+
         // Arrange
         $this->index->upsertMany([
             new VectorUpsert(id: '1', vector: [1, 2]),
