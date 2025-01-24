@@ -39,6 +39,7 @@ final readonly class HttpTransporter implements TransporterInterface
         // Build URL
         $url = $this->uri
             ->withPath($request->path)
+            ->withSearchParams($request->searchParams)
             ->toString();
 
         $factory = Psr17FactoryDiscovery::findRequestFactory();
@@ -66,7 +67,7 @@ final readonly class HttpTransporter implements TransporterInterface
         $psr17Request = $psr17Request->withHeader('Content-Type', $request->contentType->value);
 
         // Add Request Body
-        if ($request->method->isMutation()) {
+        if ($request->hasBody()) {
             $body = $factory->createStream(json_encode($request->data, JSON_THROW_ON_ERROR));
             $psr17Request = $psr17Request->withBody($body);
         }
