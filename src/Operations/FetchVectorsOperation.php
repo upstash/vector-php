@@ -8,35 +8,27 @@ use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
 use Upstash\Vector\Transporter\TransporterResponse;
+use Upstash\Vector\VectorFetch;
+use Upstash\Vector\VectorFetchResult;
 use Upstash\Vector\VectorMatch;
-use Upstash\Vector\VectorQuery;
-use Upstash\Vector\VectorQueryResult;
 
 /**
  * @internal
  */
-final readonly class QueryVectorsOperation
+final readonly class FetchVectorsOperation
 {
     use AssertsApiResponseErrors;
 
-    public function __construct(
-        private string $namespace,
-        private TransporterInterface $transporter,
-    ) {}
+    public function __construct(private string $namespace, private TransporterInterface $transporter) {}
 
-    public function query(VectorQuery $query): VectorQueryResult
+    public function fetch(VectorFetch $vectorFetch): VectorFetchResult
     {
-        $namespace = trim($this->namespace);
-        $path = '/query';
-        if ($namespace !== '') {
-            $path = "/query/$namespace";
-        }
-
+        $path = $this->getPath();
         $request = new TransporterRequest(
             contentType: ContentType::JSON,
-            method: Method::POST,
+            method: Method::GET,
             path: $path,
-            data: $query->toArray(),
+            data: $vectorFetch->toArray(),
         );
 
         $response = $this->transporter->sendRequest($request);
@@ -46,20 +38,29 @@ final readonly class QueryVectorsOperation
         return $this->transformResponse($response);
     }
 
-    private function transformResponse(TransporterResponse $response): VectorQueryResult
+    private function getPath(): string
     {
-        $data = json_decode($response->data, true);
+        $namespace = trim($this->namespace);
+        if ($namespace === '') {
+            return '/fetch';
+        }
 
+        return "/fetch/$namespace";
+    }
+
+    private function transformResponse(TransporterResponse $response): VectorFetchResult
+    {
+        $data = json_decode($response->data, true)['result'] ?? [];
         $results = array_map(function (array $result) {
             return new VectorMatch(
                 id: $result['id'],
-                score: $result['score'],
+                score: 1.0,
                 vector: $result['vector'] ?? [],
                 data: $result['data'] ?? '',
                 metadata: $result['metadata'] ?? [],
             );
-        }, $data['result'] ?? []);
+        }, $data);
 
-        return new VectorQueryResult($results);
+        return new VectorFetchResult($results);
     }
 }

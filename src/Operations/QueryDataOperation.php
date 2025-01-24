@@ -6,11 +6,11 @@ use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\DataQuery;
 use Upstash\Vector\DataQueryResult;
 use Upstash\Vector\Operations\Concerns\AssertsApiResponseErrors;
-use Upstash\Vector\QueryResult;
 use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
 use Upstash\Vector\Transporter\TransporterResponse;
+use Upstash\Vector\VectorMatch;
 
 /**
  * @internal
@@ -51,7 +51,7 @@ final readonly class QueryDataOperation
         $data = json_decode($response->data, true);
 
         $results = array_map(function (array $result) {
-            return new QueryResult(
+            return new VectorMatch(
                 id: $result['id'],
                 score: $result['score'],
                 vector: $result['vector'] ?? [],

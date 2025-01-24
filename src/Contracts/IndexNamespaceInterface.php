@@ -7,6 +7,8 @@ use Upstash\Vector\DataQueryResult;
 use Upstash\Vector\DataUpsert;
 use Upstash\Vector\NamespaceInfo;
 use Upstash\Vector\VectorDeleteResult;
+use Upstash\Vector\VectorFetch;
+use Upstash\Vector\VectorFetchResult;
 use Upstash\Vector\VectorQuery;
 use Upstash\Vector\VectorQueryResult;
 use Upstash\Vector\VectorUpsert;
@@ -41,4 +43,6 @@ interface IndexNamespaceInterface
      * @param  array<string|VectorIdentifierInterface>  $ids
      */
     public function deleteVectors(array $ids): VectorDeleteResult;
+
+    public function fetch(VectorFetch $vectorFetch): VectorFetchResult;
 }

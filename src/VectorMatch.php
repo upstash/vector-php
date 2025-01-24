@@ -4,7 +4,7 @@ namespace Upstash\Vector;
 
 use Upstash\Vector\Contracts\VectorIdentifierInterface;
 
-final readonly class QueryResult implements VectorIdentifierInterface
+final readonly class VectorMatch implements VectorIdentifierInterface
 {
     public function __construct(
         public string $id,

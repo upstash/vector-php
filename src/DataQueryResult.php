@@ -9,13 +9,13 @@ use IteratorAggregate;
 use Traversable;
 
 /**
- * @implements IteratorAggregate<int,QueryResult>
- * @implements ArrayAccess<int,QueryResult>
+ * @implements IteratorAggregate<int,VectorMatch>
+ * @implements ArrayAccess<int,VectorMatch>
  */
 final readonly class DataQueryResult implements ArrayAccess, Countable, IteratorAggregate
 {
     /**
-     * @param  array<QueryResult>  $results
+     * @param  array<VectorMatch>  $results
      */
     public function __construct(
         private array $results,
@@ -32,7 +32,7 @@ final readonly class DataQueryResult implements ArrayAccess, Countable, Iterator
     }
 
     /**
-     * @return QueryResult[]
+     * @return VectorMatch[]
      */
     public function getResults(): array
     {
@@ -44,7 +44,7 @@ final readonly class DataQueryResult implements ArrayAccess, Countable, Iterator
         return isset($this->results[$offset]);
     }
 
-    public function offsetGet(mixed $offset): QueryResult
+    public function offsetGet(mixed $offset): VectorMatch
     {
         return $this->results[$offset];
     }

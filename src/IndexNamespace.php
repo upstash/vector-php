@@ -6,6 +6,7 @@ use Upstash\Vector\Contracts\IndexNamespaceInterface;
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\Operations\DeleteNamespaceOperation;
 use Upstash\Vector\Operations\DeleteVectorsOperation;
+use Upstash\Vector\Operations\FetchVectorsOperation;
 use Upstash\Vector\Operations\GetNamespaceInfoOperation;
 use Upstash\Vector\Operations\QueryDataOperation;
 use Upstash\Vector\Operations\QueryVectorsOperation;
@@ -66,5 +67,11 @@ final readonly class IndexNamespace implements IndexNamespaceInterface
     {
         return (new DeleteVectorsOperation($this->namespace, $this->transporter))
             ->delete($ids);
+    }
+
+    public function fetch(VectorFetch $vectorFetch): VectorFetchResult
+    {
+        return (new FetchVectorsOperation($this->namespace, $this->transporter))
+            ->fetch($vectorFetch);
     }
 }
