@@ -71,9 +71,9 @@ final class Index implements IndexInterface
         );
     }
 
-    public function delete(): void
+    public function deleteNamespace(): void
     {
-        $this->namespace('')->delete();
+        $this->namespace('')->deleteNamespace();
     }
 
     public function upsert(VectorUpsert $vector): void
@@ -106,9 +106,9 @@ final class Index implements IndexInterface
         return $this->namespace('')->queryData($query);
     }
 
-    public function deleteVectors(array $ids): VectorDeleteResult
+    public function delete(array $ids): VectorDeleteResult
     {
-        return $this->namespace('')->deleteVectors($ids);
+        return $this->namespace('')->delete($ids);
     }
 
     public function fetch(VectorFetch $vectorFetch): VectorFetchResult

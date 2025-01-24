@@ -20,7 +20,7 @@ class DeleteNamespaceTest extends TestCase
         $this->expectExceptionMessage('The default namespace, which is the empty string "", cannot be deleted.');
 
         // Act
-        $this->index->delete();
+        $this->index->deleteNamespace();
     }
 
     public function test_can_delete_namespace(): void
@@ -30,7 +30,7 @@ class DeleteNamespaceTest extends TestCase
         $this->waitForIndex($this->index);
 
         // Act
-        $this->namespace->delete();
+        $this->namespace->deleteNamespace();
 
         // Assert
         $this->assertSame(0, $this->namespace->getNamespaceInfo()->vectorCount);

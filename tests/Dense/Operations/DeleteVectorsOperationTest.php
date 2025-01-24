@@ -24,7 +24,7 @@ class DeleteVectorsOperationTest extends TestCase
         ]);
         $this->waitForIndex($this->namespace);
 
-        $result = $this->namespace->deleteVectors([
+        $result = $this->namespace->delete([
             'id-1',
             'id-2',
         ]);
@@ -49,7 +49,7 @@ class DeleteVectorsOperationTest extends TestCase
             topK: 2,
         ));
 
-        $result = $this->namespace->deleteVectors($queryResult->getResults());
+        $result = $this->namespace->delete($queryResult->getResults());
 
         $this->assertEquals(2, $result->deleted);
     }

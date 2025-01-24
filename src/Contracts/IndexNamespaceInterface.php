@@ -19,7 +19,7 @@ interface IndexNamespaceInterface
 
     public function reset(): void;
 
-    public function delete(): void;
+    public function deleteNamespace(): void;
 
     public function upsert(VectorUpsert $vector): void;
 
@@ -42,7 +42,7 @@ interface IndexNamespaceInterface
     /**
      * @param  array<string|VectorIdentifierInterface>  $ids
      */
-    public function deleteVectors(array $ids): VectorDeleteResult;
+    public function delete(array $ids): VectorDeleteResult;
 
     public function fetch(VectorFetch $vectorFetch): VectorFetchResult;
 }

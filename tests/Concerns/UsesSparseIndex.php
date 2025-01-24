@@ -26,7 +26,7 @@ trait UsesSparseIndex
 
     public function tearDown(): void
     {
-        $this->namespace->delete();
+        $this->namespace->deleteNamespace();
 
         parent::tearDown();
     }
