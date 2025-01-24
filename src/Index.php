@@ -8,6 +8,7 @@ use Upstash\Vector\Contracts\IndexNamespaceInterface;
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\Exceptions\MissingEnvironmentVariableException;
 use Upstash\Vector\Operations\GetIndexInfoOperation;
+use Upstash\Vector\Operations\ResetAllNamespacesOperation;
 use Upstash\Vector\Transporter\BaseUri;
 use Upstash\Vector\Transporter\Headers;
 use Upstash\Vector\Transporter\HttpTransporter;
@@ -113,5 +114,10 @@ final class Index implements IndexInterface
     public function fetch(VectorFetch $vectorFetch): VectorFetchResult
     {
         return $this->namespace('')->fetch($vectorFetch);
+    }
+
+    public function resetAll(): void
+    {
+        (new ResetAllNamespacesOperation($this->getTransporter()))->resetAll();
     }
 }
