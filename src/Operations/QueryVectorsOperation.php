@@ -4,6 +4,7 @@ namespace Upstash\Vector\Operations;
 
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\Operations\Concerns\AssertsApiResponseErrors;
+use Upstash\Vector\SparseVector;
 use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
@@ -51,10 +52,22 @@ final readonly class QueryVectorsOperation
         $data = json_decode($response->data, true);
 
         $results = array_map(function (array $result) {
+            $vector = [];
+            if (isset($result['vector'])) {
+                $vector = $result['vector'];
+            }
+
+            $sparseVector = new SparseVector;
+            if (isset($result['sparseVector'])) {
+                ['indices' => $indices, 'values' => $values] = $result['sparseVector'];
+                $sparseVector = new SparseVector(indices: $indices, values: $values);
+            }
+
             return new VectorMatch(
                 id: $result['id'],
                 score: $result['score'],
-                vector: $result['vector'] ?? [],
+                vector: $vector,
+                sparseVector: $sparseVector,
                 data: $result['data'] ?? '',
                 metadata: $result['metadata'] ?? [],
             );

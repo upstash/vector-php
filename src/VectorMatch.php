@@ -10,6 +10,7 @@ final readonly class VectorMatch implements VectorIdentifierInterface
         public string $id,
         public float $score,
         public array $vector = [],
+        public SparseVector $sparseVector = new SparseVector,
         public string $data = '',
         public array $metadata = [],
     ) {}
