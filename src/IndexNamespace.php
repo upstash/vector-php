@@ -9,6 +9,7 @@ use Upstash\Vector\Operations\DeleteVectorsOperation;
 use Upstash\Vector\Operations\FetchVectorsOperation;
 use Upstash\Vector\Operations\GetNamespaceInfoOperation;
 use Upstash\Vector\Operations\QueryDataOperation;
+use Upstash\Vector\Operations\QueryVectorsManyOperation;
 use Upstash\Vector\Operations\QueryVectorsOperation;
 use Upstash\Vector\Operations\ResetNamespaceOperation;
 use Upstash\Vector\Operations\UpsertDataOperation;
@@ -56,6 +57,11 @@ final readonly class IndexNamespace implements IndexNamespaceInterface
     public function query(VectorQuery $query): VectorQueryResult
     {
         return (new QueryVectorsOperation($this->namespace, $this->transporter))->query($query);
+    }
+
+    public function queryMany(array $queries): VectorQueryManyResult
+    {
+        return (new QueryVectorsManyOperation($this->namespace, $this->transporter))->query($queries);
     }
 
     public function queryData(DataQuery $query): DataQueryResult

@@ -101,6 +101,11 @@ final class Index implements IndexInterface
         return $this->namespace('')->query($query);
     }
 
+    public function queryMany(array $queries): VectorQueryManyResult
+    {
+        return $this->namespace('')->queryMany($queries);
+    }
+
     public function queryData(DataQuery $query): DataQueryResult
     {
         return $this->namespace('')->queryData($query);

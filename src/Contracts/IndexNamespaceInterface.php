@@ -10,6 +10,7 @@ use Upstash\Vector\VectorDeleteResult;
 use Upstash\Vector\VectorFetch;
 use Upstash\Vector\VectorFetchResult;
 use Upstash\Vector\VectorQuery;
+use Upstash\Vector\VectorQueryManyResult;
 use Upstash\Vector\VectorQueryResult;
 use Upstash\Vector\VectorUpsert;
 
@@ -36,6 +37,11 @@ interface IndexNamespaceInterface
     public function upsertDataMany(array $data): void;
 
     public function query(VectorQuery $query): VectorQueryResult;
+
+    /**
+     * @param  array<VectorQuery>  $queries
+     */
+    public function queryMany(array $queries): VectorQueryManyResult;
 
     public function queryData(DataQuery $query): DataQueryResult;
 
