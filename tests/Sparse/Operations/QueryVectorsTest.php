@@ -40,4 +40,31 @@ class QueryVectorsTest extends TestCase
         $this->assertCount(1, $results);
         $this->assertEquals('1', $results[0]->id);
     }
+
+    public function test_query_vectors_including_vectors(): void
+    {
+        $this->namespace->upsertMany([
+            new VectorUpsert(
+                id: '1',
+                sparseVector: new SparseVector(
+                    indices: [1, 2, 3],
+                    values: [5, 6, 7],
+                ),
+            ),
+        ]);
+
+        $this->waitForIndex($this->namespace);
+
+        $results = $this->namespace->query(new VectorQuery(
+            sparseVector: new SparseVector(
+                indices: [1, 2, 3],
+                values: [5, 6, 7],
+            ),
+            topK: 1,
+            includeVectors: true,
+        ));
+
+        $this->assertSame([1, 2, 3], $results[0]->sparseVector->indices);
+        $this->assertSame([5.0, 6.0, 7.0], $results[0]->sparseVector->values);
+    }
 }
