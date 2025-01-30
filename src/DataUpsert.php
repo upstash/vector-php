@@ -12,10 +12,15 @@ final readonly class DataUpsert
 
     public function toArray(): array
     {
-        return [
+        $result = [
             'id' => $this->id,
             'data' => $this->data,
-            'metadata' => (object) $this->metadata,
         ];
+
+        if (! empty($this->metadata)) {
+            $result['metadata'] = (object) $this->metadata;
+        }
+
+        return $result;
     }
 }
