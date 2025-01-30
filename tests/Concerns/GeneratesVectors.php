@@ -9,7 +9,7 @@ trait GeneratesVectors
         $vector = [];
 
         for ($i = 0; $i < $dimensions; $i++) {
-            $vector[] = random_int(0, 100) / 100;
+            $vector[] = random_int(1, 100) / 100;
         }
 
         return $vector;
