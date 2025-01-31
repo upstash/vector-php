@@ -13,6 +13,7 @@ use Upstash\Vector\VectorMatch;
 use Upstash\Vector\VectorQuery;
 use Upstash\Vector\VectorQueryManyResult;
 use Upstash\Vector\VectorQueryResult;
+use Upstash\Vector\VectorUpdate;
 use Upstash\Vector\VectorUpsert;
 
 interface IndexNamespaceInterface
@@ -54,4 +55,6 @@ interface IndexNamespaceInterface
     public function fetch(VectorFetch $vectorFetch): VectorFetchResult;
 
     public function random(): ?VectorMatch;
+
+    public function update(VectorUpdate $update): void;
 }
