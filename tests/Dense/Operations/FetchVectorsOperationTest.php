@@ -35,4 +35,16 @@ class FetchVectorsOperationTest extends TestCase
         $this->assertCount(2, $results);
         $this->assertCount(2, $results[0]->vector);
     }
+
+    public function test_can_fetch_vectors_that_dont_exist(): void
+    {
+        // Act
+        $results = $this->namespace->fetch(new VectorFetch(
+            ids: ['1', '2'],
+            includeVectors: true,
+        ));
+
+        // Assert
+        $this->assertCount(0, $results);
+    }
 }

@@ -51,8 +51,13 @@ final readonly class FetchVectorsOperation
 
     private function transformResponse(TransporterResponse $response): VectorFetchResult
     {
-        $data = json_decode($response->data, true)['result'] ?? [];
-        $results = array_map(fn (array $result) => $this->mapVectorMatch($result), $data);
+        $data = json_decode($response->data, true);
+        $result = $data['result'] ?? [];
+
+        // Filter out empty results
+        $result = array_filter($result);
+
+        $results = array_map(fn (array $result) => $this->mapVectorMatch($result), $result);
 
         return new VectorFetchResult($results);
     }
