@@ -6,6 +6,7 @@ use Upstash\Vector\Contracts\IndexNamespaceInterface;
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\Operations\DeleteNamespaceOperation;
 use Upstash\Vector\Operations\DeleteVectorsOperation;
+use Upstash\Vector\Operations\FetchRandomVectorOperation;
 use Upstash\Vector\Operations\FetchVectorsOperation;
 use Upstash\Vector\Operations\GetNamespaceInfoOperation;
 use Upstash\Vector\Operations\QueryDataOperation;
@@ -79,5 +80,10 @@ final readonly class IndexNamespace implements IndexNamespaceInterface
     {
         return (new FetchVectorsOperation($this->namespace, $this->transporter))
             ->fetch($vectorFetch);
+    }
+
+    public function random(): ?VectorMatch
+    {
+        return (new FetchRandomVectorOperation($this->namespace, $this->transporter))->fetch();
     }
 }

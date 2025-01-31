@@ -125,4 +125,9 @@ final class Index implements IndexInterface
     {
         (new ResetAllNamespacesOperation($this->getTransporter()))->resetAll();
     }
+
+    public function random(): ?VectorMatch
+    {
+        return $this->namespace('')->random();
+    }
 }
