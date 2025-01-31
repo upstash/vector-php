@@ -130,4 +130,9 @@ final class Index implements IndexInterface
     {
         return $this->namespace('')->random();
     }
+
+    public function update(VectorUpdate $update): void
+    {
+        $this->namespace('')->update($update);
+    }
 }

@@ -13,6 +13,7 @@ use Upstash\Vector\Operations\QueryDataOperation;
 use Upstash\Vector\Operations\QueryVectorsManyOperation;
 use Upstash\Vector\Operations\QueryVectorsOperation;
 use Upstash\Vector\Operations\ResetNamespaceOperation;
+use Upstash\Vector\Operations\UpdateVectorOperation;
 use Upstash\Vector\Operations\UpsertDataOperation;
 use Upstash\Vector\Operations\UpsertVectorOperation;
 
@@ -85,5 +86,10 @@ final readonly class IndexNamespace implements IndexNamespaceInterface
     public function random(): ?VectorMatch
     {
         return (new FetchRandomVectorOperation($this->namespace, $this->transporter))->fetch();
+    }
+
+    public function update(VectorUpdate $update): void
+    {
+        (new UpdateVectorOperation($this->namespace, $this->transporter))->update($update);
     }
 }
