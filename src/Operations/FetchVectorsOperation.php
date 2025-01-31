@@ -4,14 +4,13 @@ namespace Upstash\Vector\Operations;
 
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\Operations\Concerns\AssertsApiResponseErrors;
-use Upstash\Vector\SparseVector;
+use Upstash\Vector\Operations\Concerns\MapsVectorMatches;
 use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
 use Upstash\Vector\Transporter\TransporterResponse;
 use Upstash\Vector\VectorFetch;
 use Upstash\Vector\VectorFetchResult;
-use Upstash\Vector\VectorMatch;
 
 /**
  * @internal
@@ -19,6 +18,7 @@ use Upstash\Vector\VectorMatch;
 final readonly class FetchVectorsOperation
 {
     use AssertsApiResponseErrors;
+    use MapsVectorMatches;
 
     public function __construct(private string $namespace, private TransporterInterface $transporter) {}
 
@@ -52,27 +52,7 @@ final readonly class FetchVectorsOperation
     private function transformResponse(TransporterResponse $response): VectorFetchResult
     {
         $data = json_decode($response->data, true)['result'] ?? [];
-        $results = array_map(function (array $result) {
-            $vector = [];
-            if (isset($result['vector'])) {
-                $vector = $result['vector'];
-            }
-
-            $sparseVector = new SparseVector;
-            if (isset($result['sparseVector'])) {
-                ['indices' => $indices, 'values' => $values] = $result['sparseVector'];
-                $sparseVector = new SparseVector(indices: $indices, values: $values);
-            }
-
-            return new VectorMatch(
-                id: $result['id'],
-                score: 1.0,
-                vector: $vector,
-                sparseVector: $sparseVector,
-                data: $result['data'] ?? '',
-                metadata: $result['metadata'] ?? [],
-            );
-        }, $data);
+        $results = array_map(fn (array $result) => $this->mapVectorMatch($result), $data);
 
         return new VectorFetchResult($results);
     }
