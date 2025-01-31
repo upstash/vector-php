@@ -3,15 +3,15 @@
 namespace Upstash\Vector\Tests\Dense\Operations;
 
 use PHPUnit\Framework\TestCase;
-use Upstash\Vector\Tests\Concerns\GeneratesVectors;
 use Upstash\Vector\Tests\Concerns\UsesDenseIndex;
 use Upstash\Vector\Tests\Concerns\WaitsForIndex;
 use Upstash\Vector\VectorFetch;
 use Upstash\Vector\VectorUpsert;
 
+use function Upstash\Vector\createRandomVector;
+
 class FetchVectorsOperationTest extends TestCase
 {
-    use GeneratesVectors;
     use UsesDenseIndex;
     use WaitsForIndex;
 
@@ -19,9 +19,9 @@ class FetchVectorsOperationTest extends TestCase
     {
         // Arrange
         $this->namespace->upsertMany([
-            new VectorUpsert(id: '1', vector: $this->generateVector(2)),
-            new VectorUpsert(id: '2', vector: $this->generateVector(2)),
-            new VectorUpsert(id: '3', vector: $this->generateVector(2)),
+            new VectorUpsert(id: '1', vector: createRandomVector(2)),
+            new VectorUpsert(id: '2', vector: createRandomVector(2)),
+            new VectorUpsert(id: '3', vector: createRandomVector(2)),
         ]);
         $this->waitForIndex($this->namespace);
 

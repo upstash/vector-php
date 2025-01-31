@@ -43,7 +43,7 @@ final readonly class VectorFetchResult implements ArrayAccess, Countable, Iterat
     /**
      * @return array<VectorMatch>
      */
-    private function getResults(): array
+    public function getResults(): array
     {
         return $this->results;
     }

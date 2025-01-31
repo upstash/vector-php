@@ -4,21 +4,21 @@ namespace Upstash\Vector\Tests\Hybrid\Operations;
 
 use PHPUnit\Framework\TestCase;
 use Upstash\Vector\SparseVector;
-use Upstash\Vector\Tests\Concerns\GeneratesVectors;
 use Upstash\Vector\Tests\Concerns\UsesHybridIndex;
 use Upstash\Vector\Tests\Concerns\WaitsForIndex;
 use Upstash\Vector\VectorQuery;
 use Upstash\Vector\VectorUpsert;
 
+use function Upstash\Vector\createRandomVector;
+
 class QueryVectorsTest extends TestCase
 {
-    use GeneratesVectors;
     use UsesHybridIndex;
     use WaitsForIndex;
 
     public function test_query_vectors(): void
     {
-        $vector = $this->generateVector(384);
+        $vector = createRandomVector(384);
 
         $this->namespace->upsert(new VectorUpsert(
             id: '1',
@@ -48,7 +48,7 @@ class QueryVectorsTest extends TestCase
     {
         $this->namespace->upsert(new VectorUpsert(
             id: '1',
-            vector: $this->generateVector(384),
+            vector: createRandomVector(384),
             sparseVector: new SparseVector(
                 indices: [1, 2, 3],
                 values: [5, 6, 7],
@@ -71,7 +71,7 @@ class QueryVectorsTest extends TestCase
 
     public function test_query_with_no_sparse_vectors(): void
     {
-        $vector = $this->generateVector(384);
+        $vector = createRandomVector(384);
 
         $this->namespace->upsert(new VectorUpsert(
             id: '1',
@@ -95,7 +95,7 @@ class QueryVectorsTest extends TestCase
 
     public function test_query_vectors_including_vectors(): void
     {
-        $vector = $this->generateVector(384);
+        $vector = createRandomVector(384);
 
         $this->namespace->upsert(new VectorUpsert(
             id: '1',

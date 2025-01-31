@@ -5,14 +5,14 @@ namespace Upstash\Vector\Tests\Hybrid\Operations;
 use PHPUnit\Framework\TestCase;
 use Upstash\Vector\Exceptions\OperationFailedException;
 use Upstash\Vector\SparseVector;
-use Upstash\Vector\Tests\Concerns\GeneratesVectors;
 use Upstash\Vector\Tests\Concerns\UsesHybridIndex;
 use Upstash\Vector\Tests\Concerns\WaitsForIndex;
 use Upstash\Vector\VectorUpsert;
 
+use function Upstash\Vector\createRandomVector;
+
 class UpsertVectorTest extends TestCase
 {
-    use GeneratesVectors;
     use UsesHybridIndex;
     use WaitsForIndex;
 
@@ -20,7 +20,7 @@ class UpsertVectorTest extends TestCase
     {
         $this->namespace->upsert(new VectorUpsert(
             id: '1',
-            vector: $this->generateVector(384),
+            vector: createRandomVector(384),
             sparseVector: new SparseVector(
                 indices: [1, 2, 3],
                 values: [5, 6, 7],
@@ -41,7 +41,7 @@ class UpsertVectorTest extends TestCase
 
         $this->namespace->upsert(new VectorUpsert(
             id: '1',
-            vector: $this->generateVector(384),
+            vector: createRandomVector(384),
         ));
     }
 
@@ -64,7 +64,7 @@ class UpsertVectorTest extends TestCase
         $this->namespace->upsertMany([
             new VectorUpsert(
                 id: '1',
-                vector: $this->generateVector(384),
+                vector: createRandomVector(384),
                 sparseVector: new SparseVector(
                     indices: [1, 2, 3],
                     values: [5, 6, 7],
@@ -72,7 +72,7 @@ class UpsertVectorTest extends TestCase
             ),
             new VectorUpsert(
                 id: '2',
-                vector: $this->generateVector(384),
+                vector: createRandomVector(384),
                 sparseVector: new SparseVector(
                     indices: [4, 5, 6],
                     values: [8, 9, 10],

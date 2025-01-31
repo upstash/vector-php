@@ -3,7 +3,6 @@
 namespace Upstash\Vector\Tests\Dense\Operations;
 
 use PHPUnit\Framework\TestCase;
-use Upstash\Vector\Tests\Concerns\GeneratesVectors;
 use Upstash\Vector\Tests\Concerns\UsesDenseIndex;
 use Upstash\Vector\Tests\Concerns\WaitsForIndex;
 use Upstash\Vector\VectorQuery;
@@ -11,7 +10,6 @@ use Upstash\Vector\VectorUpsert;
 
 class QueryVectorsManyTest extends TestCase
 {
-    use GeneratesVectors;
     use UsesDenseIndex;
     use WaitsForIndex;
 
