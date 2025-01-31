@@ -11,6 +11,7 @@ use Upstash\Vector\Transporter\TransporterRequest;
 use Upstash\Vector\Transporter\TransporterResponse;
 use Upstash\Vector\VectorFetch;
 use Upstash\Vector\VectorFetchResult;
+use Upstash\Vector\VectorMatch;
 
 /**
  * @internal
@@ -51,9 +52,18 @@ final readonly class FetchVectorsOperation
 
     private function transformResponse(TransporterResponse $response): VectorFetchResult
     {
-        $data = json_decode($response->data, true)['result'] ?? [];
-        $results = array_map(fn (array $result) => $this->mapVectorMatch($result), $data);
+        $data = json_decode($response->data, true);
+        $result = $data['result'] ?? [];
 
-        return new VectorFetchResult($results);
+        // Filter out empty results
+        $result = array_filter($result);
+
+        $results = array_map(fn (array $result) => $this->mapVectorMatch($result), $result);
+        $keys = array_map(fn (VectorMatch $match) => $match->getIdentifier(), $results);
+
+        // Key-by vector ID
+        $results = array_combine($keys, $results);
+
+        return new VectorFetchResult($keys, $results);
     }
 }

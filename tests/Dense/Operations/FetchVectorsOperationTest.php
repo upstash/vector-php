@@ -33,6 +33,54 @@ class FetchVectorsOperationTest extends TestCase
 
         // Assert
         $this->assertCount(2, $results);
-        $this->assertCount(2, $results[0]->vector);
+        $this->assertNotNull($results[0]->vector);
+        $this->assertCount(2, $results[0]->vector); // O(n)
+    }
+
+    public function test_can_fetch_vectors_and_reference_them_by_vector_id(): void
+    {
+        // Arrange
+        $this->namespace->upsertMany([
+            new VectorUpsert(id: '1', vector: createRandomVector(2)),
+            new VectorUpsert(id: '2', vector: createRandomVector(2)),
+            new VectorUpsert(id: '3', vector: createRandomVector(2)),
+        ]);
+        $this->waitForIndex($this->namespace);
+
+        // Act
+        $results = $this->namespace->fetch(new VectorFetch(
+            ids: ['1', '2'],
+            includeVectors: true,
+        ));
+
+        // Assert
+        $this->assertCount(2, $results);
+        $this->assertNotNull($results['1']->vector);
+        $this->assertCount(2, $results['1']->vector); // O(n)
+    }
+
+    public function test_can_fetch_vectors_that_dont_exist(): void
+    {
+        // Act
+        $results = $this->namespace->fetch(new VectorFetch(
+            ids: ['1', '2'],
+            includeVectors: true,
+        ));
+
+        // Assert
+        $this->assertCount(0, $results);
+    }
+
+    public function test_can_fetch_vectors_that_dont_exist_and_get_null(): void
+    {
+        // Act
+        $results = $this->namespace->fetch(new VectorFetch(
+            ids: ['1', '2'],
+            includeVectors: true,
+        ));
+
+        // Assert
+        $this->assertNull($results[0]);
+        $this->assertNull($results['1']);
     }
 }
