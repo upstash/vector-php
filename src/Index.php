@@ -7,6 +7,7 @@ use Upstash\Vector\Contracts\IndexInterface;
 use Upstash\Vector\Contracts\IndexNamespaceInterface;
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\Exceptions\MissingEnvironmentVariableException;
+use Upstash\Vector\Iterators\VectorRangeIterator;
 use Upstash\Vector\Operations\GetIndexInfoOperation;
 use Upstash\Vector\Operations\ListNamespacesOperation;
 use Upstash\Vector\Operations\ResetAllNamespacesOperation;
@@ -140,5 +141,15 @@ final class Index implements IndexInterface
     public function listNamespaces(): array
     {
         return (new ListNamespacesOperation($this->getTransporter()))->list();
+    }
+
+    public function range(VectorRange $range): VectorRangeResult
+    {
+        return $this->namespace('')->range($range);
+    }
+
+    public function rangeIterator(VectorRange $range): VectorRangeIterator
+    {
+        return $this->namespace('')->rangeIterator($range);
     }
 }

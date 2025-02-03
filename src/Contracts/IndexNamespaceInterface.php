@@ -5,6 +5,7 @@ namespace Upstash\Vector\Contracts;
 use Upstash\Vector\DataQuery;
 use Upstash\Vector\DataQueryResult;
 use Upstash\Vector\DataUpsert;
+use Upstash\Vector\Iterators\VectorRangeIterator;
 use Upstash\Vector\NamespaceInfo;
 use Upstash\Vector\VectorDeleteResult;
 use Upstash\Vector\VectorFetch;
@@ -13,6 +14,8 @@ use Upstash\Vector\VectorMatch;
 use Upstash\Vector\VectorQuery;
 use Upstash\Vector\VectorQueryManyResult;
 use Upstash\Vector\VectorQueryResult;
+use Upstash\Vector\VectorRange;
+use Upstash\Vector\VectorRangeResult;
 use Upstash\Vector\VectorUpdate;
 use Upstash\Vector\VectorUpsert;
 
@@ -57,4 +60,8 @@ interface IndexNamespaceInterface
     public function random(): ?VectorMatch;
 
     public function update(VectorUpdate $update): void;
+
+    public function range(VectorRange $range): VectorRangeResult;
+
+    public function rangeIterator(VectorRange $range): VectorRangeIterator;
 }

@@ -46,9 +46,13 @@ final readonly class VectorQueryResult implements ArrayAccess, Countable, Iterat
         return isset($this->results[$offset]);
     }
 
-    public function offsetGet(mixed $offset): VectorMatch
+    public function offsetGet(mixed $offset): ?VectorMatch
     {
-        return $this->results[$offset];
+        if ($this->offsetExists($offset)) {
+            return $this->results[$offset];
+        }
+
+        return null;
     }
 
     public function offsetSet(mixed $offset, mixed $value): void {}
