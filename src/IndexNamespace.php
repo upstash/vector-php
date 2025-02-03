@@ -4,6 +4,7 @@ namespace Upstash\Vector;
 
 use Upstash\Vector\Contracts\IndexNamespaceInterface;
 use Upstash\Vector\Contracts\TransporterInterface;
+use Upstash\Vector\Iterators\VectorRangeIterator;
 use Upstash\Vector\Operations\DeleteNamespaceOperation;
 use Upstash\Vector\Operations\DeleteVectorsOperation;
 use Upstash\Vector\Operations\FetchRandomVectorOperation;
@@ -12,6 +13,7 @@ use Upstash\Vector\Operations\GetNamespaceInfoOperation;
 use Upstash\Vector\Operations\QueryDataOperation;
 use Upstash\Vector\Operations\QueryVectorsManyOperation;
 use Upstash\Vector\Operations\QueryVectorsOperation;
+use Upstash\Vector\Operations\RangeVectorsOperation;
 use Upstash\Vector\Operations\ResetNamespaceOperation;
 use Upstash\Vector\Operations\UpdateVectorOperation;
 use Upstash\Vector\Operations\UpsertDataOperation;
@@ -91,5 +93,15 @@ final readonly class IndexNamespace implements IndexNamespaceInterface
     public function update(VectorUpdate $update): void
     {
         (new UpdateVectorOperation($this->namespace, $this->transporter))->update($update);
+    }
+
+    public function range(VectorRange $range): VectorRangeResult
+    {
+        return (new RangeVectorsOperation($this->namespace, $this->transporter))->range($range);
+    }
+
+    public function rangeIterator(VectorRange $range): VectorRangeIterator
+    {
+        return (new RangeVectorsOperation($this->namespace, $this->transporter))->rangeIterator($range);
     }
 }
