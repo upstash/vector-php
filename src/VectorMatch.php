@@ -19,4 +19,16 @@ final readonly class VectorMatch implements VectorIdentifierInterface
     {
         return $this->id;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->id,
+            'score' => $this->score,
+            'vector' => $this->vector,
+            'sparseVector' => $this->sparseVector->toArray(),
+            'data' => $this->data,
+            'metadata' => $this->metadata,
+        ];
+    }
 }
