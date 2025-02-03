@@ -113,4 +113,54 @@ class QueryVectorsManyTest extends TestCase
         $this->assertCount(1, $results['query1']);
         $this->assertCount(2, $results['query2']);
     }
+
+    public function test_can_query_index_exploding_array(): void
+    {
+        $this->namespace->upsertMany([
+            new VectorUpsert(
+                id: '1',
+                vector: [0.1, 0.1],
+                metadata: [
+                    'country' => 'US',
+                    'continent' => 'NA',
+                ],
+                data: 'Los Angeles',
+            ),
+            new VectorUpsert(
+                id: '2',
+                vector: [0.2, 0.2],
+                metadata: [
+                    'country' => 'PT',
+                    'continent' => 'EU',
+                ],
+                data: 'Lisbon',
+            ),
+            new VectorUpsert(
+                id: '3',
+                vector: [0.3, 0.3],
+                metadata: [
+                    'country' => 'DE',
+                    'continent' => 'EU',
+                ],
+                data: 'Berlin',
+            ),
+        ]);
+        $this->waitForIndex($this->namespace);
+
+        [$query1, $query2] = $this->namespace->queryMany([
+            new VectorQuery(
+                vector: [0.6, 0.3],
+                topK: 1,
+                includeVectors: true,
+            ),
+            new VectorQuery(
+                vector: [0.2, 0.2],
+                topK: 2,
+                includeMetadata: true,
+            ),
+        ]);
+
+        $this->assertCount(1, $query1);
+        $this->assertCount(2, $query2);
+    }
 }
