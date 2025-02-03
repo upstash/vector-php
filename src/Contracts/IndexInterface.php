@@ -11,4 +11,9 @@ interface IndexInterface extends IndexNamespaceInterface
     public function getInfo(): IndexInfo;
 
     public function resetAll(): void;
+
+    /**
+     * @return array<string>
+     */
+    public function listNamespaces(): array;
 }
