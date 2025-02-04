@@ -24,61 +24,122 @@ composer require upstash/vector
 
 Create a new index on [Upstash](https://console.upstash.com/vector)
 
-### Basic Usage
+## Usage
 
+### Initialize the index
 ```php
 use Upstash\Vector\Index;
 
 // Initialize the index
 $index = new Index(
-    url: '<UPSTASH_VECTOR_REST_URL>',
-    token: '<UPSTASH_VECTOR_REST_TOKEN>',
+    url: 'UPSTASH_VECTOR_REST_URL',
+    token: 'UPSTASH_VECTOR_REST_TOKEN',
 );
 
 // or just to use the environment variables
 $index = Index::fromEnv();
+```
 
-// Upsert to dense index
+### Upserting Vectors
+
+
+```php
+use Upstash\Vector\Index;
 use Upstash\Vector\VectorUpsert;
+
+use function Upstash\Vector\createRandomVector;
+
+$index = new Index(
+    url: 'UPSTASH_VECTOR_REST_URL',
+    token: 'UPSTASH_VECTOR_REST_TOKEN',
+);
 
 $index->upsert(new VectorUpsert(
     id: 'upstash-rocks',
-    vector: [
-        0.13, 0.87, ... // dense embedding
-    ],
-    metadata: [
-        'title' => 'Lord of The Rings',
-        'genre' => 'fantasy',
-        'category' => 'classic',
-    ],
+    vector: createRandomVector(dimensions: 1536),
+    metadata: ['field' => 'value'],
 ));
+```
 
-// Upsert data as plain text.
+### Upserting Data with Embedding Models
+
+```php
+use Upstash\Vector\Index;
 use Upstash\Vector\DataUpsert;
 
-$index->upsertData(new DataUpsert(
-    id: 'tokyo',
-    data: 'Tokyo is the capital of Japan.',
-));
+$index = new Index(
+    url: 'UPSTASH_VECTOR_REST_URL',
+    token: 'UPSTASH_VECTOR_REST_TOKEN',
+);
 
-// Query Vector Data
+$index->upsertData(new DataUpsert(
+    id: 'upstash-vector',
+    data: 'Upstash Vector is a serverless vector database.',
+    metadata: ['field' => 'value'],
+));
+```
+
+### Querying Vectors
+
+```php
+use Upstash\Vector\Index;
 use Upstash\Vector\VectorQuery;
 
-$result = $index->query(new VectorQuery(
-    vector: [0.13, 0.87, ...], // dense embedding
-    includeVectors: true,
-    includeMetadata: true,
-    topK: 1,
+use function Upstash\Vector\createRandomVector;
+
+$index = new Index(
+    url: 'UPSTASH_VECTOR_REST_URL',
+    token: 'UPSTASH_VECTOR_REST_TOKEN',
+);
+
+$index->query(new VectorQuery(
+    vector: createRandomVector(dimensions: 1536),
+    topK: 5,
 ));
+```
 
+### Querying Data with Embedding Models
 
-// Query with your data
+```php
+use Upstash\Vector\Index;
 use Upstash\Vector\DataQuery;
 
-$result = $index->queryData(new DataQuery(
-    data: 'What is the capital of Japan?',
-    topK: 1,
+$index = new Index(
+    url: 'UPSTASH_VECTOR_REST_URL',
+    token: 'UPSTASH_VECTOR_REST_TOKEN',
+);
+
+$index->queryData(new DataQuery(
+    data: 'What is Upstash Vector?',
+    topK: 5,
 ));
+```
+
+### Fetch specific vectors
+
+```php
+use Upstash\Vector\Index;
+use Upstash\Vector\VectorFetch;
+
+$index = new Index(
+    url: 'UPSTASH_VECTOR_REST_URL',
+    token: 'UPSTASH_VECTOR_REST_TOKEN',
+);
+
+$index->fetch(new VectorFetch(ids: ['upstash-rocks']));
+```
+
+### Delete specific vectors
+
+```php
+use Upstash\Vector\Index;
+
+$index = new Index(
+    url: 'UPSTASH_VECTOR_REST_URL',
+    token: 'UPSTASH_VECTOR_REST_TOKEN',
+);
+
+$index->delete(['upstash-rocks']);
 ```
 
 ## Namespaces
@@ -87,20 +148,20 @@ Upstash Vector allows you to partition a single index into multiple isolated nam
 ### Example
 ```php
 use Upstash\Vector\Index;
+use Upstash\Vector\VectorUpsert;
 
-$index = Index::fromEnv();
+use function Upstash\Vector\createRandomVector;
 
-$namespace = $index->namespace('books');
+$index = new Index(
+    url: 'UPSTASH_VECTOR_REST_URL',
+    token: 'UPSTASH_VECTOR_REST_TOKEN',
+);
 
 // Upsert to namespace
-$namespace->upsert(new VectorUpsert(
-    id: 'lord-of-the-rings',
-    vector: [0.13, 0.87, ...],
-    metadata: [
-        'title' => 'Lord of The Rings',
-        'genre' => 'fantasy',
-        'category' => 'classic',
-    ],
+$index->namespace('books')->upsert(new VectorUpsert(
+    id: 'upstash-rocks',
+    vector: createRandomVector(dimensions: 1536),
+    metadata: ['field' => 'value'],
 ));
 ```
 
