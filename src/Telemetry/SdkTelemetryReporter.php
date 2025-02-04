@@ -28,12 +28,6 @@ final readonly class SdkTelemetryReporter
 
     public function getPackageVersion(): string
     {
-        try {
-            $version = json_decode(file_get_contents(__DIR__.'/../../composer.json'), true);
-
-            return sprintf('vector-php@%s', $version['version']);
-        } catch (Throwable $e) {
-            return sprintf('vector-php@unknown');
-        }
+        return sprintf('vector-php@%s', SdkVersion::resolve());
     }
 }
