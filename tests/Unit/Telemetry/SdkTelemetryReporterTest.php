@@ -20,6 +20,7 @@ class SdkTelemetryReporterTest extends TestCase
     public function test_package_version_is_correct(): void
     {
         $reporter = new SdkTelemetryReporter;
+        /** @phpstan-ignore argument.type */
         $version = json_decode(file_get_contents(__DIR__.'/../../../composer.json'), true)['version'];
 
         $packageVersion = $reporter->getPackageVersion();

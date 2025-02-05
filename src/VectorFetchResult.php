@@ -7,14 +7,16 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use Traversable;
+use Upstash\Vector\Contracts\Arrayable;
 
 /**
- * @implements IteratorAggregate<int,VectorMatch>
- * @implements ArrayAccess<int,VectorMatch|null>
+ * @implements IteratorAggregate<string,VectorMatch>
+ * @implements ArrayAccess<int|string,VectorMatch|null>
  */
-final readonly class VectorFetchResult implements ArrayAccess, Countable, IteratorAggregate
+final readonly class VectorFetchResult implements Arrayable, ArrayAccess, Countable, IteratorAggregate
 {
     /**
+     * @param  array<int, string>  $keys
      * @param  array<VectorMatch>  $results
      */
     public function __construct(
@@ -64,5 +66,17 @@ final readonly class VectorFetchResult implements ArrayAccess, Countable, Iterat
     public function count(): int
     {
         return count($this->results);
+    }
+
+    /**
+     * @return array{
+     *     results: VectorMatch[]
+     * }
+     */
+    public function toArray(): array
+    {
+        return [
+            'results' => $this->results,
+        ];
     }
 }

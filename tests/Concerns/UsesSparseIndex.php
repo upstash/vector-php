@@ -16,9 +16,19 @@ trait UsesSparseIndex
     {
         parent::setUp();
 
+        $url = getenv('SPARSE_UPSTASH_VECTOR_REST_URL');
+        if (! $url) {
+            throw new \Exception('SPARSE_UPSTASH_VECTOR_REST_URL is not set');
+        }
+
+        $token = getenv('SPARSE_UPSTASH_VECTOR_REST_TOKEN');
+        if (! $token) {
+            throw new \Exception('SPARSE_UPSTASH_VECTOR_REST_TOKEN is not set');
+        }
+
         $this->index = new Index(
-            url: getenv('SPARSE_UPSTASH_VECTOR_REST_URL'),
-            token: getenv('SPARSE_UPSTASH_VECTOR_REST_TOKEN'),
+            url: $url,
+            token: $token,
         );
 
         $this->namespace = $this->index->namespace(bin2hex(random_bytes(32)));

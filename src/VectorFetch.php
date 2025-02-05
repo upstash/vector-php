@@ -2,7 +2,9 @@
 
 namespace Upstash\Vector;
 
-final readonly class VectorFetch
+use Upstash\Vector\Contracts\Arrayable;
+
+final readonly class VectorFetch implements Arrayable
 {
     /**
      * @param  array<string>  $ids
@@ -14,15 +16,16 @@ final readonly class VectorFetch
         public bool $includeData = false,
     ) {}
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
-        $data = [
+        return [
             'ids' => $this->ids,
             'includeMetadata' => $this->includeMetadata,
             'includeVectors' => $this->includeVectors,
             'includeData' => $this->includeData,
         ];
-
-        return $data;
     }
 }

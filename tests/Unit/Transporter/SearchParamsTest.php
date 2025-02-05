@@ -10,8 +10,8 @@ class SearchParamsTest extends TestCase
     public function test_search_params_can_be_serialized_to_string(): void
     {
         $params = new SearchParams([
-            'limit' => 10,
-            'offset' => 20,
+            'limit' => '10',
+            'offset' => '20',
         ]);
 
         $queryString = $params->toString();
@@ -22,8 +22,8 @@ class SearchParamsTest extends TestCase
     public function test_search_params_can_be_appended(): void
     {
         $params = new SearchParams([
-            'limit' => 10,
-            'offset' => 20,
+            'limit' => '10',
+            'offset' => '20',
         ]);
 
         $params = $params->append('foo', 'bar');
@@ -36,8 +36,8 @@ class SearchParamsTest extends TestCase
     public function test_search_params_can_be_deleted(): void
     {
         $params = new SearchParams([
-            'limit' => 10,
-            'offset' => 20,
+            'limit' => '10',
+            'offset' => '20',
         ]);
 
         $params = $params->delete('limit');

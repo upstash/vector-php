@@ -33,8 +33,7 @@ class FetchVectorsOperationTest extends TestCase
 
         // Assert
         $this->assertCount(2, $results);
-        $this->assertNotNull($results[0]->vector);
-        $this->assertCount(2, $results[0]->vector); // O(n)
+        $this->assertCount(2, $results[0]->vector);
     }
 
     public function test_can_fetch_vectors_and_reference_them_by_vector_id(): void
@@ -55,8 +54,8 @@ class FetchVectorsOperationTest extends TestCase
 
         // Assert
         $this->assertCount(2, $results);
-        $this->assertNotNull($results['1']->vector);
-        $this->assertCount(2, $results['1']->vector); // O(n)
+        $this->assertArrayHasKey('1', $results);
+        $this->assertCount(2, $results['1']->vector);
     }
 
     public function test_can_fetch_vectors_that_dont_exist(): void

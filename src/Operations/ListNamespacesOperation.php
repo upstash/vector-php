@@ -18,6 +18,9 @@ final readonly class ListNamespacesOperation
 
     public function __construct(private TransporterInterface $transporter) {}
 
+    /**
+     * @return array<string>
+     */
     public function list(): array
     {
         $request = new TransporterRequest(
@@ -33,6 +36,9 @@ final readonly class ListNamespacesOperation
         return $this->transformResponse($response);
     }
 
+    /**
+     * @return array<string>
+     */
     private function transformResponse(TransporterResponse $response): array
     {
         $data = json_decode($response->data, true);

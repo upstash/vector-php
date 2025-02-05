@@ -4,6 +4,9 @@ namespace Upstash\Vector\Transporter;
 
 readonly class TransporterRequest
 {
+    /**
+     * @param  array<mixed>  $data
+     */
     public function __construct(
         public ContentType $contentType,
         public Method $method,

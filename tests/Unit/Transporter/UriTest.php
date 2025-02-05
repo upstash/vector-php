@@ -9,7 +9,7 @@ use Upstash\Vector\Transporter\Uri;
 
 class UriTest extends TestCase
 {
-    public function test_works_with_empty_path()
+    public function test_works_with_empty_path(): void
     {
         // Arrange
         $uri = new Uri(new BaseUri('https://example.com'));
@@ -18,7 +18,7 @@ class UriTest extends TestCase
         $this->assertEquals('https://example.com/', $uri->toString());
     }
 
-    public function test_can_append_path()
+    public function test_can_append_path(): void
     {
         // Arrange
         $uri = new Uri(new BaseUri('https://example.com'));
@@ -30,7 +30,7 @@ class UriTest extends TestCase
         $this->assertEquals('https://example.com/test', $newUri->toString());
     }
 
-    public function test_can_append_path_without_slash()
+    public function test_can_append_path_without_slash(): void
     {
         // Arrange
         $uri = new Uri(new BaseUri('https://example.com'));

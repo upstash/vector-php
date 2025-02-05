@@ -7,6 +7,9 @@ use Upstash\Vector\VectorMatch;
 
 trait MapsVectorMatches
 {
+    /**
+     * @param  array<mixed>  $result
+     */
     private function mapVectorMatch(array $result): VectorMatch
     {
         $vector = [];

@@ -24,7 +24,9 @@ class ResetAllNamespacesTest extends TestCase
             'Skip until we find a way to run GitHub tests without intefering with each others vector indexes'
         );
 
-        // Arrange
+        /**
+         * @phpstan-ignore deadCode.unreachable
+         */
         $this->index->upsertMany([
             new VectorUpsert(id: '1', vector: [1, 2]),
             new VectorUpsert(id: '2', vector: [4, 5]),

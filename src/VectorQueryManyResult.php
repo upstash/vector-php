@@ -6,8 +6,13 @@ use ArrayAccess;
 use Countable;
 use IteratorAggregate;
 use Traversable;
+use Upstash\Vector\Contracts\Arrayable;
 
-final readonly class VectorQueryManyResult implements ArrayAccess, Countable, IteratorAggregate
+/**
+ * @implements IteratorAggregate<int|string, VectorQueryResult>
+ * @implements ArrayAccess<int|string, VectorQueryResult>
+ */
+final readonly class VectorQueryManyResult implements Arrayable, ArrayAccess, Countable, IteratorAggregate
 {
     /**
      * @param  array<VectorQueryResult>  $results
@@ -44,5 +49,17 @@ final readonly class VectorQueryManyResult implements ArrayAccess, Countable, It
     private function getResults(): array
     {
         return $this->results;
+    }
+
+    /**
+     * @return array{
+     *     results: VectorQueryResult[]
+     * }
+     */
+    public function toArray(): array
+    {
+        return [
+            'results' => $this->results,
+        ];
     }
 }

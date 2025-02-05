@@ -2,12 +2,14 @@
 
 namespace Upstash\Vector;
 
+use Upstash\Vector\Contracts\Arrayable;
 use Upstash\Vector\Enums\UpdateMode;
 
-final readonly class VectorUpdate
+final readonly class VectorUpdate implements Arrayable
 {
     /**
      * @param  array<float>|null  $vector
+     * @param  array<string, mixed>|null  $metadata
      */
     public function __construct(
         public string $id,
@@ -18,6 +20,9 @@ final readonly class VectorUpdate
         public UpdateMode $metadataUpdateMode = UpdateMode::OVERWRITE,
     ) {}
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $data = [

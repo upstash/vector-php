@@ -2,10 +2,11 @@
 
 namespace Upstash\Vector;
 
+use Upstash\Vector\Contracts\Arrayable;
 use Upstash\Vector\Enums\FusionAlgorithm;
 use Upstash\Vector\Enums\WeightingStrategy;
 
-final readonly class VectorQuery
+final readonly class VectorQuery implements Arrayable
 {
     /**
      * @param  array<float>  $vector
@@ -22,6 +23,9 @@ final readonly class VectorQuery
         public ?FusionAlgorithm $fusionAlgorithm = null,
     ) {}
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $data = [];

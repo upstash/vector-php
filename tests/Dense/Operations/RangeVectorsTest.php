@@ -17,6 +17,9 @@ class RangeVectorsTest extends TestCase
     use UsesDenseIndex;
     use WaitsForIndex;
 
+    /**
+     * @return array<VectorUpsert>
+     */
     private function generateUpserts(int $count): array
     {
         $upserts = [];

@@ -2,8 +2,14 @@
 
 namespace Upstash\Vector;
 
-final readonly class VectorUpsert
+use Upstash\Vector\Contracts\Arrayable;
+
+final readonly class VectorUpsert implements Arrayable
 {
+    /**
+     * @param  array<float>  $vector
+     * @param  array<string, mixed>  $metadata
+     */
     public function __construct(
         public string $id,
         public array $vector = [],
@@ -12,6 +18,15 @@ final readonly class VectorUpsert
         public ?string $data = null,
     ) {}
 
+    /**
+     * @return array{
+     *     id: string,
+     *     vector?: array<float>,
+     *     sparse_vector?: array<string, float>,
+     *     metadata?: \stdClass,
+     *     data?: string,
+     * }
+     */
     public function toArray(): array
     {
         $result = [

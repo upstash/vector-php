@@ -4,7 +4,6 @@ namespace Upstash\Vector\Transporter;
 
 use Http\Discovery\Psr17FactoryDiscovery;
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Upstash\Vector\Contracts\TransporterInterface;
@@ -68,6 +67,7 @@ final readonly class HttpTransporter implements TransporterInterface
 
         // Add Request Body
         if ($request->hasBody()) {
+            /** @phpstan-ignore method.notFound */
             $body = $factory->createStream(json_encode($request->data, JSON_THROW_ON_ERROR));
             $psr17Request = $psr17Request->withBody($body);
         }
@@ -91,7 +91,7 @@ final readonly class HttpTransporter implements TransporterInterface
         );
     }
 
-    private function addTelemetryHeaders(RequestInterface|MessageInterface $psr17Request): RequestInterface|MessageInterface
+    private function addTelemetryHeaders(RequestInterface $psr17Request): RequestInterface
     {
         return (new SdkTelemetryReporter)
             ->appendHeaders($psr17Request);

@@ -68,7 +68,7 @@ final readonly class DeleteVectorsOperation
     }
 
     /**
-     * @param  array<string|VectorIdentifierInterface>  $ids
+     * @param  array<string|VectorIdentifierInterface|mixed>  $ids
      * @return array<string>
      */
     private function mapIds(array $ids): array

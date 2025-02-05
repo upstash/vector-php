@@ -57,6 +57,9 @@ final readonly class QueryVectorsManyOperation
         return '/query';
     }
 
+    /**
+     * @param  array<string|int>  $queryKeys
+     */
     private function transformResponse(TransporterResponse $response, array $queryKeys): VectorQueryManyResult
     {
         $data = json_decode($response->data, true);

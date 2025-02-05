@@ -3,9 +3,13 @@
 namespace Upstash\Vector\Transporter;
 
 use Stringable;
+use Upstash\Vector\Contracts\Arrayable;
 
-final readonly class SearchParams implements Stringable
+final readonly class SearchParams implements Arrayable, Stringable
 {
+    /**
+     * @param  array<string, string>  $queryParams
+     */
     public function __construct(private array $queryParams = []) {}
 
     public function append(string $key, string $value): SearchParams
@@ -23,6 +27,9 @@ final readonly class SearchParams implements Stringable
         );
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function toArray(): array
     {
         return $this->queryParams;

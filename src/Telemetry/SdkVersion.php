@@ -11,9 +11,17 @@ class SdkVersion
     public static function resolve(): string
     {
         try {
-            $version = json_decode(file_get_contents(__DIR__.'/../../composer.json'), true);
+            $composerContents = file_get_contents(__DIR__.'/../../composer.json');
+            if (! $composerContents) {
+                return static::UNKNOWN;
+            }
 
-            return $version['version'] ?? static::UNKNOWN;
+            $json = json_decode($composerContents, true);
+            if (! isset($json['version'])) {
+                return static::UNKNOWN;
+            }
+
+            return $json['version'];
         } catch (Throwable $e) {
             return static::UNKNOWN;
         }

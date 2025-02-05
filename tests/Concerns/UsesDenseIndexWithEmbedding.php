@@ -16,9 +16,19 @@ trait UsesDenseIndexWithEmbedding
     {
         parent::setUp();
 
+        $url = getenv('DENSE_EMBEDDING_UPSTASH_VECTOR_REST_URL');
+        if (! $url) {
+            throw new \Exception('DENSE_EMBEDDING_UPSTASH_VECTOR_REST_URL is not set');
+        }
+
+        $token = getenv('DENSE_EMBEDDING_UPSTASH_VECTOR_REST_TOKEN');
+        if (! $token) {
+            throw new \Exception('DENSE_EMBEDDING_UPSTASH_VECTOR_REST_TOKEN is not set');
+        }
+
         $this->index = new Index(
-            url: getenv('DENSE_EMBEDDING_UPSTASH_VECTOR_REST_URL'),
-            token: getenv('DENSE_EMBEDDING_UPSTASH_VECTOR_REST_TOKEN'),
+            url: $url,
+            token: $token,
         );
 
         $this->namespace = $this->index->namespace(bin2hex(random_bytes(32)));

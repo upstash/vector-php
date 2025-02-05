@@ -7,10 +7,18 @@ use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use Traversable;
+use Upstash\Vector\Contracts\Arrayable;
 use Upstash\Vector\Operations\RangeVectorsOperation;
 
-final readonly class VectorRangeResult implements ArrayAccess, Countable, IteratorAggregate
+/**
+ * @implements IteratorAggregate<int, VectorMatch>
+ * @implements ArrayAccess<int, VectorMatch>
+ */
+final readonly class VectorRangeResult implements Arrayable, ArrayAccess, Countable, IteratorAggregate
 {
+    /**
+     * @param  array<VectorMatch>  $results
+     */
     public function __construct(
         private array $results,
         public string $nextCursor,
@@ -23,6 +31,9 @@ final readonly class VectorRangeResult implements ArrayAccess, Countable, Iterat
         return count($this->results);
     }
 
+    /**
+     * @return array<VectorMatch>
+     */
     public function getResults(): array
     {
         return $this->results;
@@ -62,5 +73,19 @@ final readonly class VectorRangeResult implements ArrayAccess, Countable, Iterat
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->results);
+    }
+
+    /**
+     * @return array{
+     *     nextCursor: string,
+     *     results: VectorMatch[]
+     * }
+     */
+    public function toArray(): array
+    {
+        return [
+            'nextCursor' => $this->nextCursor,
+            'results' => $this->results,
+        ];
     }
 }

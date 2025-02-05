@@ -2,10 +2,15 @@
 
 namespace Upstash\Vector;
 
+use Upstash\Vector\Contracts\Arrayable;
 use Upstash\Vector\Contracts\VectorIdentifierInterface;
 
-final readonly class VectorMatch implements VectorIdentifierInterface
+final readonly class VectorMatch implements Arrayable, VectorIdentifierInterface
 {
+    /**
+     * @param  array<float>  $vector
+     * @param  array<string, mixed>  $metadata
+     */
     public function __construct(
         public string $id,
         public float $score,
@@ -20,6 +25,16 @@ final readonly class VectorMatch implements VectorIdentifierInterface
         return $this->id;
     }
 
+    /**
+     * @return array{
+     *     id: string,
+     *     score: float,
+     *     vector: array<float>,
+     *     sparseVector: array{indices: array<int>, values: array<float>},
+     *     data: string,
+     *     metadata: array<string, mixed>,
+     * }
+     */
     public function toArray(): array
     {
         return [

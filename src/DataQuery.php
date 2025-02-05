@@ -2,11 +2,12 @@
 
 namespace Upstash\Vector;
 
+use Upstash\Vector\Contracts\Arrayable;
 use Upstash\Vector\Enums\FusionAlgorithm;
 use Upstash\Vector\Enums\QueryMode;
 use Upstash\Vector\Enums\WeightingStrategy;
 
-final readonly class DataQuery
+final readonly class DataQuery implements Arrayable
 {
     public function __construct(
         public string $data,
@@ -20,6 +21,9 @@ final readonly class DataQuery
         public QueryMode $queryMode = QueryMode::HYBRID,
     ) {}
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $data = [

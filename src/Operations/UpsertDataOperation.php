@@ -25,6 +25,9 @@ final readonly class UpsertDataOperation
         $this->assertResponse($response);
     }
 
+    /**
+     * @param  array<DataUpsert>  $upsert
+     */
     public function upsertMany(array $upsert): void
     {
         $data = array_map(fn (DataUpsert $upsert) => $upsert->toArray(), $upsert);
@@ -35,6 +38,9 @@ final readonly class UpsertDataOperation
         $this->assertResponse($response);
     }
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     private function createRequest(array $data): TransporterRequest
     {
         $namespace = trim($this->namespace);

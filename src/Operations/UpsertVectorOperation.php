@@ -40,6 +40,9 @@ final readonly class UpsertVectorOperation
         $this->assertResponse($response);
     }
 
+    /**
+     * @param  array<string, mixed>  $data
+     */
     private function createRequest(array $data): TransporterRequest
     {
         $namespace = trim($this->namespace);

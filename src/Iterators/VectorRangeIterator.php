@@ -16,6 +16,9 @@ class VectorRangeIterator implements \Iterator
 
     private int $position = 0;
 
+    /**
+     * @var VectorMatch[]
+     */
     private array $results = [];
 
     public function __construct(
