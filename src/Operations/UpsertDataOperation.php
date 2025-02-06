@@ -30,7 +30,7 @@ final readonly class UpsertDataOperation
      */
     public function upsertMany(array $upsert): void
     {
-        $data = array_map(fn (DataUpsert $upsert) => $upsert->toArray(), $upsert);
+        $data = array_map(fn (DataUpsert $upsert) => $upsert->toArray(), array_values($upsert));
         $request = $this->createRequest($data);
 
         $response = $this->transporter->sendRequest($request);

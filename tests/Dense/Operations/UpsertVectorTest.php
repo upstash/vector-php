@@ -47,4 +47,17 @@ class UpsertVectorTest extends TestCase
             vector: [1, 2, 3],
         ));
     }
+
+    public function test_upsert_many_vectors_with_non_zero_index_works(): void
+    {
+        // Act
+        $this->namespace->upsertMany([
+            1 => new VectorUpsert(id: '1', vector: [1, 2]),
+            2 => new VectorUpsert(id: '2', vector: [4, 5]),
+            3 => new VectorUpsert(id: '3', vector: [7, 8]),
+        ]);
+
+        // Assert
+        $this->assertSame(3, $this->namespace->getNamespaceInfo()->vectorCount);
+    }
 }
