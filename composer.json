@@ -9,7 +9,7 @@
         "ai",
         "rag"
     ],
-    "version": "v1.0.0",
+    "version": "v1.0.1",
     "homepage": "https://github.com/upstash/vector-php",
     "license": "MIT",
     "authors": [
