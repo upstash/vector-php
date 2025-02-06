@@ -40,4 +40,19 @@ class UpsertDataTest extends TestCase
 
         $this->assertSame(3, $info->vectorCount);
     }
+
+    public function test_upsert_many_data_with_non_zero_index_works(): void
+    {
+        $this->namespace->upsertDataMany([
+            1 => new DataUpsert(id: '1', data: 'The capital of Japan is Tokyo'),
+            2 => new DataUpsert(id: '2', data: 'The capital of France is Paris'),
+            3 => new DataUpsert(id: '3', data: 'The capital of Germany is Berlin'),
+        ]);
+
+        $this->waitForIndex($this->namespace);
+
+        $info = $this->namespace->getNamespaceInfo();
+
+        $this->assertSame(3, $info->vectorCount);
+    }
 }

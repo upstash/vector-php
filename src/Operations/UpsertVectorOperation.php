@@ -32,7 +32,7 @@ final readonly class UpsertVectorOperation
      */
     public function upsertMany(array $upsert): void
     {
-        $data = array_map(fn (VectorUpsert $upsert) => $upsert->toArray(), $upsert);
+        $data = array_map(fn (VectorUpsert $upsert) => $upsert->toArray(), array_values($upsert));
         $request = $this->createRequest($data);
 
         $response = $this->transporter->sendRequest($request);
