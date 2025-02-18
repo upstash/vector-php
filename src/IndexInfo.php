@@ -3,6 +3,7 @@
 namespace Upstash\Vector;
 
 use Upstash\Vector\Contracts\Arrayable;
+use Upstash\Vector\Enums\IndexType;
 
 final readonly class IndexInfo implements Arrayable
 {
@@ -16,6 +17,9 @@ final readonly class IndexInfo implements Arrayable
         public int $dimension = 0,
         public string $similarityFunction = '',
         public array $namespaces = [],
+        public IndexType $indexType = IndexType::UNKNOWN,
+        public ?DenseIndexInfo $denseIndex = null,
+        public ?SparseIndexInfo $sparseIndex = null,
     ) {}
 
     public function namespace(string $namespace): NamespaceInfo
@@ -38,6 +42,9 @@ final readonly class IndexInfo implements Arrayable
             'dimension' => $this->dimension,
             'similarityFunction' => $this->similarityFunction,
             'namespaces' => $this->namespaces,
+            'indexType' => $this->indexType->value,
+            'denseIndex' => $this->denseIndex?->toArray(),
+            'sparseIndex' => $this->sparseIndex?->toArray(),
         ];
     }
 }
