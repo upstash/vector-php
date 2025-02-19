@@ -3,9 +3,12 @@
 namespace Upstash\Vector\Operations;
 
 use Upstash\Vector\Contracts\TransporterInterface;
+use Upstash\Vector\DenseIndexInfo;
+use Upstash\Vector\Enums\IndexType;
 use Upstash\Vector\IndexInfo;
 use Upstash\Vector\NamespaceInfo;
 use Upstash\Vector\Operations\Concerns\AssertsApiResponseErrors;
+use Upstash\Vector\SparseIndexInfo;
 use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
@@ -55,6 +58,31 @@ final readonly class GetIndexInfoOperation
             dimension: $result['dimension'],
             similarityFunction: $result['similarityFunction'],
             namespaces: $namespaces,
+            indexType: IndexType::tryFrom($result['indexType'] ?? '') ?? IndexType::UNKNOWN,
+            denseIndex: isset($result['denseIndex']) ? $this->transformDenseIndex($result['denseIndex']) : null,
+            sparseIndex: isset($result['sparseIndex']) ? $this->transformSparseIndex($result['sparseIndex']) : null,
+        );
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     */
+    private function transformDenseIndex(array $data): DenseIndexInfo
+    {
+        return new DenseIndexInfo(
+            dimension: $data['dimension'] ?? 0,
+            similarityFunction: $data['similarityFunction'] ?? '',
+            embeddingModel: $data['embeddingModel'] ?? '',
+        );
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     */
+    private function transformSparseIndex(array $data): SparseIndexInfo
+    {
+        return new SparseIndexInfo(
+            embeddingModel: $data['embeddingModel'] ?? '',
         );
     }
 }

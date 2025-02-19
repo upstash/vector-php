@@ -2,6 +2,7 @@
 
 namespace Upstash\Vector\Iterators;
 
+use Iterator;
 use Upstash\Vector\Operations\RangeVectorsOperation;
 use Upstash\Vector\VectorMatch;
 use Upstash\Vector\VectorRange;
@@ -10,7 +11,7 @@ use Upstash\Vector\VectorRangeResult;
 /**
  * @implements \Iterator<string, VectorMatch>
  */
-class VectorRangeIterator implements \Iterator
+class VectorRangeIterator implements Iterator
 {
     private string $nextCursor;
 
@@ -46,7 +47,6 @@ class VectorRangeIterator implements \Iterator
             $this->results = $rangeResult->getResults();
             $this->position = 0;
         }
-
     }
 
     public function key(): string
