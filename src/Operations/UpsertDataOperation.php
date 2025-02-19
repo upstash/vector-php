@@ -39,7 +39,7 @@ final readonly class UpsertDataOperation
     }
 
     /**
-     * @param  array<string, mixed>  $data
+     * @param  array<mixed>  $data
      */
     private function createRequest(array $data): TransporterRequest
     {
