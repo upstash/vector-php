@@ -14,7 +14,7 @@ final readonly class SdkTelemetryReporter
     {
         return $request
             ->withHeader('Upstash-Telemetry-Runtime', $this->getRuntime())
-            ->withHeader('Upstash-Telemetry-Package', $this->getPackageVersion());
+            ->withHeader('Upstash-Telemetry-Sdk', $this->getPackageVersion());
     }
 
     public function getRuntime(): string
