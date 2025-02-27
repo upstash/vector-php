@@ -55,6 +55,21 @@ class DeleteVectorsOperationTest extends TestCase
         $this->assertEquals(2, $result->deleted);
     }
 
+    public function test_delete_vectors_using_builder_pattern(): void
+    {
+        $this->namespace->upsertMany([
+            new VectorUpsert('users:1', vector: createRandomVector(2)),
+            new VectorUpsert('users:2', vector: createRandomVector(2)),
+            new VectorUpsert('posts:1', vector: createRandomVector(2)),
+        ]);
+        $this->waitForIndex($this->namespace);
+
+        $result = $this->namespace->delete(VectorDelete::fromIds(['users:1', 'users:2']));
+
+        $this->assertEquals(2, $result->deleted);
+        $this->assertEquals(1, $this->namespace->getNamespaceInfo()->vectorCount);
+    }
+
     public function test_delete_vectors_using_an_id_prefix(): void
     {
         $this->namespace->upsertMany([
