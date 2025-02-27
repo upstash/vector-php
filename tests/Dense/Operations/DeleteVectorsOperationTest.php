@@ -79,7 +79,7 @@ class DeleteVectorsOperationTest extends TestCase
         ]);
         $this->waitForIndex($this->namespace);
 
-        $result = $this->namespace->delete(VectorDelete::fromPrefix('users:*'));
+        $result = $this->namespace->delete(VectorDelete::fromPrefix('users:'));
 
         $this->assertEquals(2, $result->deleted);
         $this->assertEquals(1, $this->namespace->getNamespaceInfo()->vectorCount);
