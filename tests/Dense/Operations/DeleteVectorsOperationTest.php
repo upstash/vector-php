@@ -18,9 +18,9 @@ class DeleteVectorsOperationTest extends TestCase
     public function test_delete_vectors(): void
     {
         $this->namespace->upsertMany([
-            new VectorUpsert('id-1', createRandomVector(2)),
-            new VectorUpsert('id-2', createRandomVector(2)),
-            new VectorUpsert('id-3', createRandomVector(2)),
+            new VectorUpsert('id-1', vector: createRandomVector(2)),
+            new VectorUpsert('id-2', vector: createRandomVector(2)),
+            new VectorUpsert('id-3', vector: createRandomVector(2)),
         ]);
         $this->waitForIndex($this->namespace);
 
@@ -39,8 +39,8 @@ class DeleteVectorsOperationTest extends TestCase
         $vector = createRandomVector(2);
         $this->namespace->upsertMany([
             new VectorUpsert('id-1', $vector),
-            new VectorUpsert('id-2', createRandomVector(2)),
-            new VectorUpsert('id-3', createRandomVector(2)),
+            new VectorUpsert('id-2', vector: createRandomVector(2)),
+            new VectorUpsert('id-3', vector: createRandomVector(2)),
         ]);
         $this->waitForIndex($this->namespace);
 
@@ -52,5 +52,53 @@ class DeleteVectorsOperationTest extends TestCase
         $result = $this->namespace->delete($queryResult->getResults());
 
         $this->assertEquals(2, $result->deleted);
+    }
+
+    public function test_delete_vectors_using_an_id_prefix(): void
+    {
+        $this->namespace->upsertMany([
+            new VectorUpsert('users:1', vector: createRandomVector(2)),
+            new VectorUpsert('users:2', vector: createRandomVector(2)),
+            new VectorUpsert('posts:1', vector: createRandomVector(2)),
+        ]);
+        $this->waitForIndex($this->namespace);
+
+        $result = $this->namespace->deleteUsingIdPrefix('users:*');
+
+        $this->assertEquals(2, $result->deleted);
+        $this->assertEquals(1, $this->namespace->getNamespaceInfo()->vectorCount);
+    }
+
+    public function test_delete_vectors_using_a_metadata_filter(): void
+    {
+        $this->namespace->upsertMany([
+            new VectorUpsert(
+                id: 'users:1',
+                vector: createRandomVector(2),
+                metadata: [
+                    'salary' => 1000,
+                ],
+            ),
+            new VectorUpsert(
+                id: 'users:2',
+                vector: createRandomVector(2),
+                metadata: [
+                    'salary' => 2000,
+                ],
+            ),
+            new VectorUpsert(
+                id: 'users:3',
+                vector: createRandomVector(2),
+                metadata: [
+                    'salary' => 3000,
+                ],
+            ),
+        ]);
+        $this->waitForIndex($this->namespace);
+
+        $result = $this->namespace->deleteUsingMetadataFilter('salary < 3000');
+
+        $this->assertEquals(2, $result->deleted);
+        $this->assertEquals(1, $this->namespace->getNamespaceInfo()->vectorCount);
     }
 }

@@ -27,25 +27,19 @@ final readonly class DeleteVectorsOperation
      */
     public function delete(array $ids): VectorDeleteResult
     {
-        $path = $this->getPath();
-        $vectorIds = $this->mapIds($ids);
+        return $this->sendDeleteRequest([
+            'ids' => $this->mapIds($ids),
+        ]);
+    }
 
-        try {
-            $request = new TransporterRequest(
-                contentType: ContentType::JSON,
-                method: Method::DELETE,
-                path: $path,
-                data: $vectorIds,
-            );
-        } catch (\JsonException $e) {
-            throw new OperationFailedException('Invalid JSON');
-        }
+    public function deleteUsingIdPrefix(string $prefix): VectorDeleteResult
+    {
+        return $this->sendDeleteRequest(compact('prefix'));
+    }
 
-        $response = $this->transporter->sendRequest($request);
-
-        $this->assertResponse($response);
-
-        return $this->transformResponse($response);
+    public function deleteUsingMetadataFilter(string $filter): VectorDeleteResult
+    {
+        return $this->sendDeleteRequest(compact('filter'));
     }
 
     private function getPath(): string
@@ -56,6 +50,29 @@ final readonly class DeleteVectorsOperation
         }
 
         return "/delete/$namespace";
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     */
+    private function sendDeleteRequest(array $payload): VectorDeleteResult
+    {
+        try {
+            $request = new TransporterRequest(
+                contentType: ContentType::JSON,
+                method: Method::DELETE,
+                path: $this->getPath(),
+                data: $payload,
+            );
+        } catch (\JsonException $e) {
+            throw new OperationFailedException('Invalid JSON');
+        }
+
+        $response = $this->transporter->sendRequest($request);
+
+        $this->assertResponse($response);
+
+        return $this->transformResponse($response);
     }
 
     private function transformResponse(TransporterResponse $response): VectorDeleteResult

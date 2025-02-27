@@ -152,4 +152,14 @@ final class Index implements IndexInterface
     {
         return $this->namespace('')->rangeIterator($range);
     }
+
+    public function deleteUsingIdPrefix(string $prefix): VectorDeleteResult
+    {
+        return $this->namespace('')->deleteUsingIdPrefix($prefix);
+    }
+
+    public function deleteUsingMetadataFilter(string $filter): VectorDeleteResult
+    {
+        return $this->namespace('')->deleteUsingMetadataFilter($filter);
+    }
 }

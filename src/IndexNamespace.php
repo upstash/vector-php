@@ -104,4 +104,14 @@ final readonly class IndexNamespace implements IndexNamespaceInterface
     {
         return (new RangeVectorsOperation($this->namespace, $this->transporter))->rangeIterator($range);
     }
+
+    public function deleteUsingIdPrefix(string $prefix): VectorDeleteResult
+    {
+        return (new DeleteVectorsOperation($this->namespace, $this->transporter))->deleteUsingIdPrefix($prefix);
+    }
+
+    public function deleteUsingMetadataFilter(string $filter): VectorDeleteResult
+    {
+        return (new DeleteVectorsOperation($this->namespace, $this->transporter))->deleteUsingMetadataFilter($filter);
+    }
 }

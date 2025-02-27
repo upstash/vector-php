@@ -64,4 +64,8 @@ interface IndexNamespaceInterface
     public function range(VectorRange $range): VectorRangeResult;
 
     public function rangeIterator(VectorRange $range): VectorRangeIterator;
+
+    public function deleteUsingIdPrefix(string $prefix): VectorDeleteResult;
+
+    public function deleteUsingMetadataFilter(string $filter): VectorDeleteResult;
 }
