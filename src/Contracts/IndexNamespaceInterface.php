@@ -2,6 +2,7 @@
 
 namespace Upstash\Vector\Contracts;
 
+use Upstash\Vector\Contracts\Transformers\ToDeletablePayloadInterface;
 use Upstash\Vector\DataQuery;
 use Upstash\Vector\DataQueryResult;
 use Upstash\Vector\DataUpsert;
@@ -51,9 +52,9 @@ interface IndexNamespaceInterface
     public function queryData(DataQuery $query): DataQueryResult;
 
     /**
-     * @param  array<string|VectorIdentifierInterface>  $ids
+     * @param  array<string|VectorIdentifierInterface>|ToDeletablePayloadInterface  $ids
      */
-    public function delete(array $ids): VectorDeleteResult;
+    public function delete(array|ToDeletablePayloadInterface $ids): VectorDeleteResult;
 
     public function fetch(VectorFetch $vectorFetch): VectorFetchResult;
 
@@ -64,8 +65,4 @@ interface IndexNamespaceInterface
     public function range(VectorRange $range): VectorRangeResult;
 
     public function rangeIterator(VectorRange $range): VectorRangeIterator;
-
-    public function deleteUsingIdPrefix(string $prefix): VectorDeleteResult;
-
-    public function deleteUsingMetadataFilter(string $filter): VectorDeleteResult;
 }

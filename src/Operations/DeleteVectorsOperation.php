@@ -3,6 +3,7 @@
 namespace Upstash\Vector\Operations;
 
 use InvalidArgumentException;
+use Upstash\Vector\Contracts\Transformers\ToDeletablePayloadInterface;
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\Contracts\VectorIdentifierInterface;
 use Upstash\Vector\Exceptions\OperationFailedException;
@@ -23,23 +24,17 @@ final readonly class DeleteVectorsOperation
     public function __construct(private string $namespace, private TransporterInterface $transporter) {}
 
     /**
-     * @param  array<string|VectorIdentifierInterface>  $ids
+     * @param  array<string|VectorIdentifierInterface>|ToDeletablePayloadInterface  $ids
      */
-    public function delete(array $ids): VectorDeleteResult
+    public function delete(array|ToDeletablePayloadInterface $ids): VectorDeleteResult
     {
+        if ($ids instanceof ToDeletablePayloadInterface) {
+            return $this->sendDeleteRequest($ids->toDeletablePayload());
+        }
+
         return $this->sendDeleteRequest([
             'ids' => $this->mapIds($ids),
         ]);
-    }
-
-    public function deleteUsingIdPrefix(string $prefix): VectorDeleteResult
-    {
-        return $this->sendDeleteRequest(compact('prefix'));
-    }
-
-    public function deleteUsingMetadataFilter(string $filter): VectorDeleteResult
-    {
-        return $this->sendDeleteRequest(compact('filter'));
     }
 
     private function getPath(): string

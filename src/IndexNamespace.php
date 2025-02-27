@@ -3,6 +3,7 @@
 namespace Upstash\Vector;
 
 use Upstash\Vector\Contracts\IndexNamespaceInterface;
+use Upstash\Vector\Contracts\Transformers\ToDeletablePayloadInterface;
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\Iterators\VectorRangeIterator;
 use Upstash\Vector\Operations\DeleteNamespaceOperation;
@@ -73,7 +74,7 @@ final readonly class IndexNamespace implements IndexNamespaceInterface
         return (new QueryDataOperation($this->namespace, $this->transporter))->query($query);
     }
 
-    public function delete(array $ids): VectorDeleteResult
+    public function delete(array|ToDeletablePayloadInterface $ids): VectorDeleteResult
     {
         return (new DeleteVectorsOperation($this->namespace, $this->transporter))
             ->delete($ids);
@@ -103,15 +104,5 @@ final readonly class IndexNamespace implements IndexNamespaceInterface
     public function rangeIterator(VectorRange $range): VectorRangeIterator
     {
         return (new RangeVectorsOperation($this->namespace, $this->transporter))->rangeIterator($range);
-    }
-
-    public function deleteUsingIdPrefix(string $prefix): VectorDeleteResult
-    {
-        return (new DeleteVectorsOperation($this->namespace, $this->transporter))->deleteUsingIdPrefix($prefix);
-    }
-
-    public function deleteUsingMetadataFilter(string $filter): VectorDeleteResult
-    {
-        return (new DeleteVectorsOperation($this->namespace, $this->transporter))->deleteUsingMetadataFilter($filter);
     }
 }

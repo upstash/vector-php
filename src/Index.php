@@ -5,6 +5,7 @@ namespace Upstash\Vector;
 use Http\Discovery\Psr18ClientDiscovery;
 use Upstash\Vector\Contracts\IndexInterface;
 use Upstash\Vector\Contracts\IndexNamespaceInterface;
+use Upstash\Vector\Contracts\Transformers\ToDeletablePayloadInterface;
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\Exceptions\MissingEnvironmentVariableException;
 use Upstash\Vector\Iterators\VectorRangeIterator;
@@ -113,7 +114,7 @@ final class Index implements IndexInterface
         return $this->namespace('')->queryData($query);
     }
 
-    public function delete(array $ids): VectorDeleteResult
+    public function delete(array|ToDeletablePayloadInterface $ids): VectorDeleteResult
     {
         return $this->namespace('')->delete($ids);
     }
@@ -151,15 +152,5 @@ final class Index implements IndexInterface
     public function rangeIterator(VectorRange $range): VectorRangeIterator
     {
         return $this->namespace('')->rangeIterator($range);
-    }
-
-    public function deleteUsingIdPrefix(string $prefix): VectorDeleteResult
-    {
-        return $this->namespace('')->deleteUsingIdPrefix($prefix);
-    }
-
-    public function deleteUsingMetadataFilter(string $filter): VectorDeleteResult
-    {
-        return $this->namespace('')->deleteUsingMetadataFilter($filter);
     }
 }

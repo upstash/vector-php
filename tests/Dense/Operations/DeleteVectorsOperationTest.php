@@ -5,6 +5,7 @@ namespace Upstash\Vector\Tests\Dense\Operations;
 use PHPUnit\Framework\TestCase;
 use Upstash\Vector\Tests\Concerns\UsesDenseIndex;
 use Upstash\Vector\Tests\Concerns\WaitsForIndex;
+use Upstash\Vector\VectorDelete;
 use Upstash\Vector\VectorQuery;
 use Upstash\Vector\VectorUpsert;
 
@@ -63,7 +64,7 @@ class DeleteVectorsOperationTest extends TestCase
         ]);
         $this->waitForIndex($this->namespace);
 
-        $result = $this->namespace->deleteUsingIdPrefix('users:*');
+        $result = $this->namespace->delete(VectorDelete::fromPrefix('users:*'));
 
         $this->assertEquals(2, $result->deleted);
         $this->assertEquals(1, $this->namespace->getNamespaceInfo()->vectorCount);
@@ -96,7 +97,7 @@ class DeleteVectorsOperationTest extends TestCase
         ]);
         $this->waitForIndex($this->namespace);
 
-        $result = $this->namespace->deleteUsingMetadataFilter('salary < 3000');
+        $result = $this->namespace->delete(VectorDelete::fromMetadataFilter('salary < 3000'));
 
         $this->assertEquals(2, $result->deleted);
         $this->assertEquals(1, $this->namespace->getNamespaceInfo()->vectorCount);
