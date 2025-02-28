@@ -76,6 +76,7 @@ class VectorRangeIterator implements Iterator
         return $this->operation->range(new VectorRange(
             limit: $this->range->limit,
             cursor: $cursor,
+            prefix: $this->range->prefix,
             includeMetadata: $this->range->includeMetadata,
             includeVectors: $this->range->includeVectors,
             includeData: $this->range->includeData,
