@@ -33,6 +33,22 @@ class RangeVectorsTest extends TestCase
         return $upserts;
     }
 
+    /**
+     * @return array<VectorUpsert>
+     */
+    private function generatePrefixedUpserts(int $count): array
+    {
+        $upserts = [];
+        for ($i = 0; $i < $count; $i++) {
+            $upserts[] = new VectorUpsert(
+                id: sprintf('prefix-%s', $i),
+                vector: createRandomVector(2),
+            );
+        }
+
+        return $upserts;
+    }
+
     public function test_can_range_vectors(): void
     {
         // Arrange
@@ -152,6 +168,62 @@ class RangeVectorsTest extends TestCase
 
             // Assert
             $this->assertSame(25, $count);
+        });
+
+        // Assert
+        $this->assertLessThan(1024 * 1024, $memory);
+    }
+
+    public function test_can_range_vectors_over_a_prefix(): void
+    {
+        // Arrange
+        $this->namespace->upsertMany([
+            ...$this->generateUpserts(50), // ids: 0, 1, ..., 49
+            ...$this->generatePrefixedUpserts(50), // ids: prefix-0, prefix-1, ..., prefix-49
+        ]);
+        $this->waitForIndex($this->namespace);
+
+        $memory = $this->measureMemory(function () {
+            // Act
+            $results = $this->namespace->range(new VectorRange(limit: 20, prefix: 'prefix-'));
+
+            // Assert
+            $this->assertCount(20, $results);
+
+            // Act
+            $results = $this->namespace->range(new VectorRange(limit: 50, cursor: $results->nextCursor, prefix: 'prefix-'));
+
+            // Assert
+            $this->assertCount(30, $results); // fails here with 50 items
+        });
+
+        // Assert
+        $this->assertLessThan(1024 * 1024, $memory);
+    }
+
+    public function test_can_range_vectors_over_a_prefix_using_iterator(): void
+    {
+        // Arrange
+        $this->namespace->upsertMany([
+            ...$this->generateUpserts(50), // ids: 0, 1, ..., 49
+            ...$this->generatePrefixedUpserts(50), // ids: prefix-0, prefix-1, ..., prefix-49
+        ]);
+        $this->waitForIndex($this->namespace);
+
+        $memory = $this->measureMemory(function () {
+            // Arrange
+            $count = 0;
+
+            // Act
+            $results = $this->namespace->rangeIterator(new VectorRange(limit: 10, prefix: 'prefix-'));
+
+            // Increment count
+            foreach ($results as $result) {
+                $count++;
+            }
+
+            // Assert
+            $this->assertSame(50, $count);
         });
 
         // Assert
