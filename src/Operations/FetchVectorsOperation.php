@@ -10,6 +10,7 @@ use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
 use Upstash\Vector\Transporter\TransporterResponse;
 use Upstash\Vector\VectorFetch;
+use Upstash\Vector\VectorFetchByPrefix;
 use Upstash\Vector\VectorFetchResult;
 use Upstash\Vector\VectorMatch;
 
@@ -23,7 +24,7 @@ final readonly class FetchVectorsOperation
 
     public function __construct(private string $namespace, private TransporterInterface $transporter) {}
 
-    public function fetch(VectorFetch $vectorFetch): VectorFetchResult
+    public function fetch(VectorFetch|VectorFetchByPrefix $vectorFetch): VectorFetchResult
     {
         $path = $this->getPath();
         $request = new TransporterRequest(
