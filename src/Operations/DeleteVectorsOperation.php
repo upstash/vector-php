@@ -3,7 +3,7 @@
 namespace Upstash\Vector\Operations;
 
 use InvalidArgumentException;
-use Upstash\Vector\Contracts\Transformers\ToDeletablePayloadInterface;
+use Upstash\Vector\Contracts\Arrayable;
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\Contracts\VectorIdentifierInterface;
 use Upstash\Vector\Exceptions\OperationFailedException;
@@ -12,6 +12,8 @@ use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
 use Upstash\Vector\Transporter\TransporterResponse;
+use Upstash\Vector\VectorDeleteByMetadataFilter;
+use Upstash\Vector\VectorDeleteByPrefix;
 use Upstash\Vector\VectorDeleteResult;
 
 /**
@@ -24,12 +26,20 @@ final readonly class DeleteVectorsOperation
     public function __construct(private string $namespace, private TransporterInterface $transporter) {}
 
     /**
-     * @param  array<string|VectorIdentifierInterface>|ToDeletablePayloadInterface  $ids
+     * @param  string[]|string|VectorDeleteByPrefix|VectorDeleteByMetadataFilter  $ids
+     *
+     * @throws OperationFailedException
      */
-    public function delete(array|ToDeletablePayloadInterface $ids): VectorDeleteResult
+    public function delete(array|string|VectorDeleteByPrefix|VectorDeleteByMetadataFilter $ids): VectorDeleteResult
     {
-        if ($ids instanceof ToDeletablePayloadInterface) {
-            return $this->sendDeleteRequest($ids->toDeletablePayload());
+        if ($ids instanceof Arrayable) {
+            return $this->sendDeleteRequest($ids->toArray());
+        }
+
+        if (is_string($ids)) {
+            return $this->sendDeleteRequest([
+                'ids' => [$ids],
+            ]);
         }
 
         return $this->sendDeleteRequest([

@@ -2,9 +2,9 @@
 
 namespace Upstash\Vector;
 
-use Upstash\Vector\Contracts\Transformers\ToDeletablePayloadInterface;
+use Upstash\Vector\Contracts\Arrayable;
 
-final readonly class VectorFilterDelete implements ToDeletablePayloadInterface
+final readonly class VectorDeleteByMetadataFilter implements Arrayable
 {
     public function __construct(
         public string $filter,
@@ -12,10 +12,10 @@ final readonly class VectorFilterDelete implements ToDeletablePayloadInterface
 
     /**
      * @return array{
-     *     filter: string
+     *     filter: string,
      * }
      */
-    public function toDeletablePayload(): array
+    public function toArray(): array
     {
         return [
             'filter' => $this->filter,
