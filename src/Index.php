@@ -118,7 +118,7 @@ final class Index implements IndexInterface
         return $this->namespace('')->delete($ids);
     }
 
-    public function fetch(VectorFetch $vectorFetch): VectorFetchResult
+    public function fetch(VectorFetch|VectorFetchByPrefix $vectorFetch): VectorFetchResult
     {
         return $this->namespace('')->fetch($vectorFetch);
     }

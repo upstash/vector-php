@@ -9,6 +9,7 @@ use Upstash\Vector\Iterators\VectorRangeIterator;
 use Upstash\Vector\NamespaceInfo;
 use Upstash\Vector\VectorDeleteResult;
 use Upstash\Vector\VectorFetch;
+use Upstash\Vector\VectorFetchByPrefix;
 use Upstash\Vector\VectorFetchResult;
 use Upstash\Vector\VectorMatch;
 use Upstash\Vector\VectorQuery;
@@ -55,7 +56,7 @@ interface IndexNamespaceInterface
      */
     public function delete(array $ids): VectorDeleteResult;
 
-    public function fetch(VectorFetch $vectorFetch): VectorFetchResult;
+    public function fetch(VectorFetch|VectorFetchByPrefix $vectorFetch): VectorFetchResult;
 
     public function random(): ?VectorMatch;
 

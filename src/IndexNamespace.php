@@ -79,7 +79,7 @@ final readonly class IndexNamespace implements IndexNamespaceInterface
             ->delete($ids);
     }
 
-    public function fetch(VectorFetch $vectorFetch): VectorFetchResult
+    public function fetch(VectorFetch|VectorFetchByPrefix $vectorFetch): VectorFetchResult
     {
         return (new FetchVectorsOperation($this->namespace, $this->transporter))
             ->fetch($vectorFetch);
