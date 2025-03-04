@@ -5,7 +5,7 @@ namespace Upstash\Vector\Transporter;
 /**
  * @internal
  */
-class Headers
+readonly class Headers
 {
     /**
      * @param  array<string, string>  $headers

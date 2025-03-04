@@ -113,7 +113,7 @@ final class Index implements IndexInterface
         return $this->namespace('')->queryData($query);
     }
 
-    public function delete(array $ids): VectorDeleteResult
+    public function delete(array|string|VectorDeleteByPrefix|VectorDeleteByMetadataFilter $ids): VectorDeleteResult
     {
         return $this->namespace('')->delete($ids);
     }

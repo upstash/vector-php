@@ -5,6 +5,8 @@ namespace Upstash\Vector\Tests\Dense\Operations;
 use PHPUnit\Framework\TestCase;
 use Upstash\Vector\Tests\Concerns\UsesDenseIndex;
 use Upstash\Vector\Tests\Concerns\WaitsForIndex;
+use Upstash\Vector\VectorDeleteByMetadataFilter;
+use Upstash\Vector\VectorDeleteByPrefix;
 use Upstash\Vector\VectorQuery;
 use Upstash\Vector\VectorUpsert;
 
@@ -18,9 +20,9 @@ class DeleteVectorsOperationTest extends TestCase
     public function test_delete_vectors(): void
     {
         $this->namespace->upsertMany([
-            new VectorUpsert('id-1', createRandomVector(2)),
-            new VectorUpsert('id-2', createRandomVector(2)),
-            new VectorUpsert('id-3', createRandomVector(2)),
+            new VectorUpsert('id-1', vector: createRandomVector(2)),
+            new VectorUpsert('id-2', vector: createRandomVector(2)),
+            new VectorUpsert('id-3', vector: createRandomVector(2)),
         ]);
         $this->waitForIndex($this->namespace);
 
@@ -34,13 +36,29 @@ class DeleteVectorsOperationTest extends TestCase
         $this->assertSame(1, $info->vectorCount);
     }
 
+    public function test_delete_single_vector(): void
+    {
+        $this->namespace->upsertMany([
+            new VectorUpsert('id-1', vector: createRandomVector(2)),
+            new VectorUpsert('id-2', vector: createRandomVector(2)),
+            new VectorUpsert('id-3', vector: createRandomVector(2)),
+        ]);
+        $this->waitForIndex($this->namespace);
+
+        $result = $this->namespace->delete('id-1');
+
+        $this->assertEquals(1, $result->deleted);
+        $info = $this->namespace->getNamespaceInfo();
+        $this->assertSame(2, $info->vectorCount);
+    }
+
     public function test_delete_vectors_from_a_query_result_results(): void
     {
         $vector = createRandomVector(2);
         $this->namespace->upsertMany([
             new VectorUpsert('id-1', $vector),
-            new VectorUpsert('id-2', createRandomVector(2)),
-            new VectorUpsert('id-3', createRandomVector(2)),
+            new VectorUpsert('id-2', vector: createRandomVector(2)),
+            new VectorUpsert('id-3', vector: createRandomVector(2)),
         ]);
         $this->waitForIndex($this->namespace);
 
@@ -52,5 +70,57 @@ class DeleteVectorsOperationTest extends TestCase
         $result = $this->namespace->delete($queryResult->getResults());
 
         $this->assertEquals(2, $result->deleted);
+    }
+
+    public function test_delete_vectors_using_an_id_prefix(): void
+    {
+        $this->namespace->upsertMany([
+            new VectorUpsert('users:1', vector: createRandomVector(2)),
+            new VectorUpsert('users:2', vector: createRandomVector(2)),
+            new VectorUpsert('posts:1', vector: createRandomVector(2)),
+        ]);
+        $this->waitForIndex($this->namespace);
+
+        $result = $this->namespace->delete(new VectorDeleteByPrefix(
+            prefix: 'users:',
+        ));
+
+        $this->assertEquals(2, $result->deleted);
+        $this->assertEquals(1, $this->namespace->getNamespaceInfo()->vectorCount);
+    }
+
+    public function test_delete_vectors_using_a_metadata_filter(): void
+    {
+        $this->namespace->upsertMany([
+            new VectorUpsert(
+                id: 'users:1',
+                vector: createRandomVector(2),
+                metadata: [
+                    'salary' => 1000,
+                ],
+            ),
+            new VectorUpsert(
+                id: 'users:2',
+                vector: createRandomVector(2),
+                metadata: [
+                    'salary' => 2000,
+                ],
+            ),
+            new VectorUpsert(
+                id: 'users:3',
+                vector: createRandomVector(2),
+                metadata: [
+                    'salary' => 3000,
+                ],
+            ),
+        ]);
+        $this->waitForIndex($this->namespace);
+
+        $result = $this->namespace->delete(new VectorDeleteByMetadataFilter(
+            filter: 'salary > 1000',
+        ));
+
+        $this->assertEquals(2, $result->deleted);
+        $this->assertEquals(1, $this->namespace->getNamespaceInfo()->vectorCount);
     }
 }

@@ -3,6 +3,7 @@
 namespace Upstash\Vector\Operations;
 
 use InvalidArgumentException;
+use Upstash\Vector\Contracts\Arrayable;
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\Contracts\VectorIdentifierInterface;
 use Upstash\Vector\Exceptions\OperationFailedException;
@@ -11,6 +12,8 @@ use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
 use Upstash\Vector\Transporter\TransporterResponse;
+use Upstash\Vector\VectorDeleteByMetadataFilter;
+use Upstash\Vector\VectorDeleteByPrefix;
 use Upstash\Vector\VectorDeleteResult;
 
 /**
@@ -23,29 +26,25 @@ final readonly class DeleteVectorsOperation
     public function __construct(private string $namespace, private TransporterInterface $transporter) {}
 
     /**
-     * @param  array<string|VectorIdentifierInterface>  $ids
+     * @param  string[]|string|VectorDeleteByPrefix|VectorDeleteByMetadataFilter  $ids
+     *
+     * @throws OperationFailedException
      */
-    public function delete(array $ids): VectorDeleteResult
+    public function delete(array|string|VectorDeleteByPrefix|VectorDeleteByMetadataFilter $ids): VectorDeleteResult
     {
-        $path = $this->getPath();
-        $vectorIds = $this->mapIds($ids);
-
-        try {
-            $request = new TransporterRequest(
-                contentType: ContentType::JSON,
-                method: Method::DELETE,
-                path: $path,
-                data: $vectorIds,
-            );
-        } catch (\JsonException $e) {
-            throw new OperationFailedException('Invalid JSON');
+        if ($ids instanceof Arrayable) {
+            return $this->sendDeleteRequest($ids->toArray());
         }
 
-        $response = $this->transporter->sendRequest($request);
+        if (is_string($ids)) {
+            return $this->sendDeleteRequest([
+                'ids' => [$ids],
+            ]);
+        }
 
-        $this->assertResponse($response);
-
-        return $this->transformResponse($response);
+        return $this->sendDeleteRequest([
+            'ids' => $this->mapIds($ids),
+        ]);
     }
 
     private function getPath(): string
@@ -56,6 +55,29 @@ final readonly class DeleteVectorsOperation
         }
 
         return "/delete/$namespace";
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     */
+    private function sendDeleteRequest(array $payload): VectorDeleteResult
+    {
+        try {
+            $request = new TransporterRequest(
+                contentType: ContentType::JSON,
+                method: Method::DELETE,
+                path: $this->getPath(),
+                data: $payload,
+            );
+        } catch (\JsonException $e) {
+            throw new OperationFailedException('Invalid JSON');
+        }
+
+        $response = $this->transporter->sendRequest($request);
+
+        $this->assertResponse($response);
+
+        return $this->transformResponse($response);
     }
 
     private function transformResponse(TransporterResponse $response): VectorDeleteResult

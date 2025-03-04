@@ -73,7 +73,10 @@ final readonly class IndexNamespace implements IndexNamespaceInterface
         return (new QueryDataOperation($this->namespace, $this->transporter))->query($query);
     }
 
-    public function delete(array $ids): VectorDeleteResult
+    /**
+     * @param  string[]|string|VectorDeleteByPrefix|VectorDeleteByMetadataFilter  $ids
+     */
+    public function delete(array|string|VectorDeleteByPrefix|VectorDeleteByMetadataFilter $ids): VectorDeleteResult
     {
         return (new DeleteVectorsOperation($this->namespace, $this->transporter))
             ->delete($ids);
