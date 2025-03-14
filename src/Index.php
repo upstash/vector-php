@@ -11,9 +11,11 @@ use Upstash\Vector\Iterators\VectorRangeIterator;
 use Upstash\Vector\Operations\GetIndexInfoOperation;
 use Upstash\Vector\Operations\ListNamespacesOperation;
 use Upstash\Vector\Operations\ResetAllNamespacesOperation;
+use Upstash\Vector\Telemetry\SdkVersion;
 use Upstash\Vector\Transporter\BaseUri;
 use Upstash\Vector\Transporter\Headers;
 use Upstash\Vector\Transporter\HttpTransporter;
+use Upstash\Vector\Transporter\Plugins\TelemetryPlugin;
 
 final class Index implements IndexInterface
 {
@@ -69,7 +71,12 @@ final class Index implements IndexInterface
             baseUri: new BaseUri($this->url),
             headers: new Headers([
                 'Authorization' => "Bearer {$this->token}",
-            ])
+            ]),
+            plugins: [
+                new TelemetryPlugin(
+                    sdkVersion: SdkVersion::resolve(),
+                ),
+            ],
         );
     }
 
