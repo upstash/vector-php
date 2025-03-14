@@ -7,7 +7,7 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Upstash\Vector\Contracts\TransporterInterface;
-use Upstash\Vector\Telemetry\SdkTelemetryReporter;
+use Upstash\Vector\Contracts\TransporterPluginInterface;
 
 /**
  * @internal
@@ -16,10 +16,14 @@ final readonly class HttpTransporter implements TransporterInterface
 {
     private Uri $uri;
 
+    /**
+     * @param  TransporterPluginInterface[]  $plugins
+     */
     public function __construct(
         private ClientInterface $client,
         BaseUri $baseUri,
         private Headers $headers = new Headers,
+        private array $plugins = [],
     ) {
         $this->uri = new Uri($baseUri);
     }
@@ -43,6 +47,11 @@ final readonly class HttpTransporter implements TransporterInterface
 
         $factory = Psr17FactoryDiscovery::findRequestFactory();
 
+        // run expandRequest plugins
+        foreach ($this->plugins as $plugin) {
+            $request = $plugin->expandRequest($request);
+        }
+
         // Create PSR-17 Request
         $psr17Request = $factory->createRequest(
             $request->method->value,
@@ -58,9 +67,6 @@ final readonly class HttpTransporter implements TransporterInterface
         foreach ($request->headers->toArray() as $header => $value) {
             $psr17Request = $psr17Request->withHeader($header, $value);
         }
-
-        // Add Telemetry Headers
-        $psr17Request = $this->addTelemetryHeaders($psr17Request);
 
         // Add Content type
         $psr17Request = $psr17Request->withHeader('Content-Type', $request->contentType->value);
@@ -89,11 +95,5 @@ final readonly class HttpTransporter implements TransporterInterface
             headers: $headers,
             data: $response->getBody()->getContents(),
         );
-    }
-
-    private function addTelemetryHeaders(RequestInterface $psr17Request): RequestInterface
-    {
-        return (new SdkTelemetryReporter)
-            ->appendHeaders($psr17Request);
     }
 }

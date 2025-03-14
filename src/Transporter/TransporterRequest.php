@@ -20,4 +20,16 @@ readonly class TransporterRequest
     {
         return ! empty($this->data);
     }
+
+    public function withHeaders(Headers $headers): self
+    {
+        return new self(
+            contentType: $this->contentType,
+            method: $this->method,
+            path: $this->path,
+            headers: $headers,
+            data: $this->data,
+            searchParams: $this->searchParams,
+        );
+    }
 }
