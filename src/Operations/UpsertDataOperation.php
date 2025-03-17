@@ -4,17 +4,18 @@ namespace Upstash\Vector\Operations;
 
 use Upstash\Vector\Contracts\TransporterInterface;
 use Upstash\Vector\DataUpsert;
-use Upstash\Vector\Exceptions\OperationFailedException;
+use Upstash\Vector\Operations\Concerns\AssertsApiResponseErrors;
 use Upstash\Vector\Transporter\ContentType;
 use Upstash\Vector\Transporter\Method;
 use Upstash\Vector\Transporter\TransporterRequest;
-use Upstash\Vector\Transporter\TransporterResponse;
 
 /**
  * @internal
  */
 final readonly class UpsertDataOperation
 {
+    use AssertsApiResponseErrors;
+
     public function __construct(private string $namespace, private TransporterInterface $transporter) {}
 
     public function upsert(DataUpsert $upsert): void
@@ -55,13 +56,5 @@ final readonly class UpsertDataOperation
             path: $path,
             data: $data,
         );
-    }
-
-    private function assertResponse(TransporterResponse $response): void
-    {
-        if ($response->statusCode === 422) {
-            $data = json_decode($response->data, true);
-            throw new OperationFailedException($data['error']);
-        }
     }
 }
