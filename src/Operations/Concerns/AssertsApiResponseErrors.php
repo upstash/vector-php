@@ -25,5 +25,9 @@ trait AssertsApiResponseErrors
 
             throw new OperationFailedException($data['error']);
         }
+
+        if ($response->statusCode > 500 && $response->statusCode < 600) {
+            throw new OperationFailedException($data['error']);
+        }
     }
 }
