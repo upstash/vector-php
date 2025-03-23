@@ -55,7 +55,7 @@ class RangeVectorsTest extends TestCase
         $this->namespace->upsertMany($this->generateUpserts(100));
         $this->waitForIndex($this->namespace);
 
-        $memory = $this->measureMemory(function () {
+        $memory = $this->measureMemory(function (): void {
             // Act
             $results = $this->namespace->range(new VectorRange(limit: 10));
 
@@ -73,7 +73,7 @@ class RangeVectorsTest extends TestCase
         $this->namespace->upsertMany($this->generateUpserts(100));
         $this->waitForIndex($this->namespace);
 
-        $memory = $this->measureMemory(function () {
+        $memory = $this->measureMemory(function (): void {
             // Act
             $results = $this->namespace->range(new VectorRange(limit: 10));
 
@@ -97,7 +97,7 @@ class RangeVectorsTest extends TestCase
         $this->namespace->upsertMany($this->generateUpserts(100));
         $this->waitForIndex($this->namespace);
 
-        $memory = $this->measureMemory(function () {
+        $memory = $this->measureMemory(function (): void {
             // Act
             $results = $this->namespace->range(new VectorRange(limit: 10));
 
@@ -121,7 +121,7 @@ class RangeVectorsTest extends TestCase
         $this->namespace->upsertMany($this->generateUpserts(100));
         $this->waitForIndex($this->namespace);
 
-        $memory = $this->measureMemory(function () {
+        $memory = $this->measureMemory(function (): void {
             // Arrange
             $count = 0;
 
@@ -152,7 +152,7 @@ class RangeVectorsTest extends TestCase
         $this->namespace->upsertMany($this->generateUpserts(100));
         $this->waitForIndex($this->namespace);
 
-        $memory = $this->measureMemory(function () {
+        $memory = $this->measureMemory(function (): void {
             // Arrange
             $count = 0;
 
